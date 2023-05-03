@@ -1,0 +1,64 @@
+{
+  "home": {
+    "listen": "Explore music",
+    "songs": "Songs"
+  },
+  "manage": {
+    "my_songs": "Your songs",
+    "upload": "Upload"
+  },
+  "register": {
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirm-password": "Confirm Password",
+    "submit": "Submit"
+  },
+  "login": {
+    "email": "Email",
+    "password": "Password",
+    "submit": "Submit"
+  },
+  "song": {
+    "comment_count": "No comments | 1 comment | {count} comments"
+  },
+  "header": {
+    "manage": "Manage",
+    "logout": "Logout",
+    "log-reg": "Login / Register"
+  },
+  "modal": {
+    "title": "Your Account",
+    "btn-login": "Login",
+    "btn-reg": "Register",
+    "tab-login": "Login",
+    "tab-register": "Register"
+  },
+  "edit": {
+    "title": "Song Title",
+    "genre": "Genre",
+    "submit": "Submit",
+    "back": "Back"
+  },
+  "placeholder": {
+    "text": "Enter Comment"
+  },
+  "messages": {
+    "required": "The field {field} is required.",
+    "min": "The field {field} is too short.",
+    "max": "The field {field} is too long.",
+    "alpha_spaces": "The field {field} may only contain alphabetical characters and spaces.",
+    "email": "The field {field} must be a valid email.",
+    "min_value": "The field {field} is too low.",
+    "max_value": "The field {field} is too high.",
+    "excluded": "You are not allowed to use this value for the field {field}.",
+    "passwords_mismatch": "The passwords don't match."
+  },
+  "fieldNames": {
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "confirm_password": "1"
+  },
+  "uploadedBy": "Uploaded By"
+}
