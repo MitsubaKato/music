@@ -63,7 +63,6 @@
 import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
-  components: {},
   name: "Player",
   computed: {
     ...mapGetters(["playing"]),
