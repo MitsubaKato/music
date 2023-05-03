@@ -60,6 +60,7 @@
     "name":"Имя",
     "confirm_password": "1"
   },
-  "uploadedBy": "Загружено пользователем"
+  "uploadedBy": "Загружено пользователем",
+  "hello": "hello"
 
 }
