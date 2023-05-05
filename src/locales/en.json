@@ -68,6 +68,9 @@
   },
   "files": {
     "drop": "Drop your files here"
+  },
+  "labels": {
+    "upload": "File"
   }
   
 }

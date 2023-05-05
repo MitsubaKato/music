@@ -20,7 +20,10 @@
       >
         <h5>{{ $t("files.drop") }}</h5>
       </div>
-      <input type="file" multiple @change="upload($event)" />
+      <label class="custom-file-upload">
+        {{ $t('labels.upload') }}
+        <input type="file" multiple @change="upload($event)" style="display:none" />
+      </label>          
       <hr class="my-6" />
       <!-- Progess Bars -->
       <div class="mb-4" v-for="upload in uploads" :key="upload.name">
@@ -143,7 +146,25 @@ export default {
     });
   },
 };
-
-
-
 </script>
+
+<style>
+.custom-file-upload {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: #ffffff;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: none;
+  transition: background-color 0.3s;
+  margin-top: 20px;
+}
+
+.custom-file-upload:hover {
+  background-color: #0056b3;
+}
+
+</style>
