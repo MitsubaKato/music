@@ -14,7 +14,7 @@
         {{ song.genre }}
       </span>
       <span class="text-gray-500 text-sm">
-        {{ $t('uploadedBy') }} {{ song.display_name }}
+        {{ $t('fieldNames.uploadedBy') }} {{ song.display_name }}
       </span>      
     </div>
 

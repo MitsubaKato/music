@@ -104,7 +104,7 @@ export default {
       in_submission: false,
       show_alert: false,
       alert_variant: "bg-blue-500",
-      alert_message: "Please wait! Updating song info.",
+      alert_message: $t("alert.alert_message"),
     };
   },
   methods: {
@@ -112,14 +112,14 @@ export default {
       this.in_submission = true;
       this.show_alert = true;
       this.alert_variant = "bg-blue-500";
-      this.alert_message = "Please wait! Updating song info.";
+      this.alert_message = $t("alert.alert_message");
 
       try {
         await songsCollection.doc(this.song.docID).update(values);
       } catch (error) {
         this.in_submission = false;
         this.alert_variant = "bg-red-500";
-        this.alert_message = "Something went wrong! Try again later";
+        this.alert_message = $t("alert.wrong");
         return;
       }
 
@@ -128,7 +128,7 @@ export default {
 
       this.in_submission = false;
       this.alert_variant = "bg-green-500";
-      this.alert_message = "Success!";
+      this.alert_message = $t("alert.success");
     },
     async deleteSong() {
       const storageRef = storage.ref();

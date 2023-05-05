@@ -58,7 +58,16 @@
     "email": "Email",
     "password": "Password",
     "name": "Name",
-    "confirm_password": "1"
+    "confirm_password": "1",
+    "uploadedBy": "Uploaded By"
   },
-  "uploadedBy": "Uploaded By"
+  "alert": {
+    "update": "Please wait! Updating song info.",
+    "wrong": "Something went wrong! Try again later",
+    "success": "Success!"
+  },
+  "files": {
+    "drop": "Drop your files here"
+  }
+  
 }
