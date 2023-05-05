@@ -48,7 +48,21 @@ export default {
     return {
       songs: [],
       unsavedFlag: false,
+      unsubscribeAuth: null,
     };
+  },
+
+  created() {
+    this.unsubscribeAuth = auth.onAuthStateChanged((user) => {
+      if (!user) {
+        this.$router.push({ name: "Home" });
+      }
+    });
+  },
+  beforeUnmount() {
+    if (this.unsubscribeAuth) {
+      this.unsubscribeAuth();
+    }
   },
 
   handleClick() {},
