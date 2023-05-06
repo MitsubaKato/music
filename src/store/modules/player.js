@@ -31,6 +31,9 @@ export default {
       state.duration = helper.formatTime(state.sound.duration());
       state.playerProgress = `${(state.sound.seek() / state.sound.duration()) * 100}%`;
     },
+    updateVolume(state, payload) {
+      state.sound.volume(payload);
+    },
   },
   actions: {
     async newSong({ commit, state, dispatch }, payload) {

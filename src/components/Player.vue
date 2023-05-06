@@ -4,8 +4,9 @@
     class="fixed bottom-0 left-0 bg-white p-5 pb-4 text-left align-top w-full h-16"
   >
     <div class="relative">
+
       <!-- Play/Pause Button -->
-      <div class="float-left w-7 h-7 leading-3">
+      <div class="float-left w-7 h-7 leading-3 ">
         <button type="button" @click.prevent="toggleAudio">
           <i
             class="fa text-gray-500 text-xl"
@@ -13,6 +14,18 @@
           ></i>
         </button>
       </div>
+
+      <div class="float-left w-24 h-7 leading-3 mt-1 mr-5">
+  <input
+    type="range"
+    min="0"
+    max="1"
+    step="0.01"
+    v-model="volume"
+    @input="updateVolume"
+    class="slider"
+  />
+</div>
       <!-- Current Position -->
       <div
         class="float-left w-7 h-7 leading-3 text-gray-400 mt-0 text-lg w-14 ml-5 mt-1"
@@ -64,6 +77,12 @@ import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "Player",
+  data() {
+    return {
+      volume: 0.3,
+      showVolumeSlider: false,
+    };
+  },
   computed: {
     ...mapGetters(["playing"]),
     ...mapState({
@@ -75,6 +94,9 @@ export default {
   },
   methods: {
     ...mapActions(["toggleAudio", "updateSeek"]),
+    updateVolume() {
+      this.$store.commit("updateVolume", this.volume);
+    },
   },
 };
 </script>
