@@ -64,7 +64,10 @@
   "alert": {
     "update": "Please wait! Updating song info.",
     "wrong": "Something went wrong! Try again later",
-    "success": "Success!"
+    "success": "Success!",
+    "login": "Please wait! We are logging you in.",
+    "invalid": "Invalid login details.",
+    "logged": "Success! You are now logged in."
   },
   "files": {
     "drop": "Drop your files here"
