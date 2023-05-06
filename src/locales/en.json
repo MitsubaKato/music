@@ -12,7 +12,10 @@
     "email": "Email",
     "password": "Password",
     "confirm-password": "Confirm Password",
-    "submit": "Submit"
+    "submit": "Submit",
+    "created": "Please wait! Your account is being created.",
+    "error": "An unexpected error occured. Please try again later.",
+    "success": "Success! Your account has been created."
   },
   "login": {
     "email": "Email",

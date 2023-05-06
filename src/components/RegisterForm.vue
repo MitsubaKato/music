@@ -83,7 +83,7 @@ export default {
       reg_in_submission: false,
       reg_show_alert: false,
       reg_alert_variant: "bg-blue-500",
-      reg_alert_msg: "Please wait! Your account is being created.",
+      reg_alert_msg: this.$t('register.created'),
     };
   },
   methods: {
@@ -91,20 +91,19 @@ export default {
       this.reg_show_alert = true;
       this.reg_in_submission = true;
       this.reg_alert_variant = "bg-blue-500";
-      this.reg_alert_msg = "Please wait! Your account is being created.";
+      this.reg_alert_msg = this.$t('register.created');
 
       try {
         await this.$store.dispatch("register", values);
       } catch (error) {
         this.reg_in_submission = false;
         this.reg_alert_variant = "bg-red-500";
-        this.reg_alert_msg =
-          "An unexpected error occured. Please try again later.";
+        this.reg_alert_msg = this.$t('register.error');
         return;
       }
 
       this.reg_alert_variant = "bg-green-500";
-      this.reg_alert_msg = "Success! Your account has been created.";
+      this.reg_alert_msg =  this.$t('register.success');
       window.location.reload();
     },
   },
