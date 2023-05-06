@@ -8,6 +8,7 @@ export default {
     seek: '00:00',
     duration: '00:00',
     playerProgress: '0%',
+    positionUpdateInterval: null,
   },
   getters: {
     playing: (state) => {
@@ -51,42 +52,39 @@ export default {
         });
       });
     },
-    async toggleAudio({ state }) {
+    async toggleAudio({ state, dispatch }) {
       if (!state.sound.playing) {
         return;
       }
-
+    
       if (state.sound.playing()) {
         state.sound.pause();
       } else {
         state.sound.play();
       }
+      dispatch('progress');
     },
-    progress({ commit, state, dispatch }) {
-      commit('updatePosition');
-
-      if (state.sound.playing()) {
-        requestAnimationFrame(() => {
-          dispatch('progress');
-        });
+    progress({ commit, state }) {
+      if (state.positionUpdateInterval !== null) {
+        clearInterval(state.positionUpdateInterval);
       }
+    
+      state.positionUpdateInterval = setInterval(() => {
+        commit('updatePosition');
+      }, 100);
     },
     updateSeek({ state, dispatch }, payload) {
       if (!state.sound.playing) {
         return;
       }
-
+    
       const { x, width } = payload.currentTarget.getBoundingClientRect();
-      // Document = 2000, Timeline = 1000, Click = 500, Distance = 500
       const clickX = payload.clientX - x;
       const percentage = clickX / width;
       const seconds = state.sound.duration() * percentage;
-
+    
       state.sound.seek(seconds);
-
-      state.sound.once('seek', () => {
-        dispatch('progress');
-      });
+      dispatch('progress');
     },
   },
 };

@@ -1,12 +1,9 @@
 <template>
   <!-- Player -->
-  <div
-    class="fixed bottom-0 left-0 bg-white p-5 pb-4 text-left align-top w-full h-16"
-  >
-    <div class="relative">
-
+  <div class="fixed bottom-0 left-0 bg-white p-5 pb-4 text-left align-top w-full h-16">
+    <div class="relative flex items-center">
       <!-- Play/Pause Button -->
-      <div class="float-left w-7 h-7 leading-3 ">
+      <div class="w-7 h-7 leading-3">
         <button type="button" @click.prevent="toggleAudio">
           <i
             class="fa text-gray-500 text-xl"
@@ -14,26 +11,24 @@
           ></i>
         </button>
       </div>
-
-      <div class="float-left w-24 h-7 leading-3 mt-1 mr-5">
-  <input
-    type="range"
-    min="0"
-    max="1"
-    step="0.01"
-    v-model="volume"
-    @input="updateVolume"
-    class="slider"
-  />
-</div>
+      <!-- Volume Slider -->
+      <div class="w-24 h-7 leading-3 mt-1 mr-5 flex items-center">
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          v-model="volume"
+          @input="updateVolume"
+          class="slider"
+        />
+      </div>
       <!-- Current Position -->
-      <div
-        class="float-left w-7 h-7 leading-3 text-gray-400 mt-0 text-lg w-14 ml-5 mt-1"
-      >
+      <div class="w-14 h-7 leading-3 text-gray-400 text-lg flex items-center pl-5">
         <span class="player-currenttime">{{ seek }}</span>
       </div>
       <!-- Scrub -->
-      <div class="float-left w-7 h-7 leading-3 ml-7 mt-2 player-scrub">
+      <div class="w-1/2 h-7 leading-3 ml-3 mt-2 player-scrub flex-grow-0">
         <div
           class="absolute left-0 right-0 text-lg text-center mx-auto player-song-info"
           v-if="currentSong.modified_name"
@@ -41,7 +36,7 @@
           <span class="song-title">{{ currentSong.modified_name }}</span>
           <span class="song-artist">
             ({{ $t('fieldNames.uploadedBy') }} {{ currentSong.display_name }})
-          </span>          
+          </span>
         </div>
         <!-- Scrub Container  -->
         <span
@@ -55,7 +50,7 @@
           >
             <i class="fas fa-circle"></i>
           </span>
-          <!-- Player Progres Bar -->
+          <!-- Player Progress Bar -->
           <span
             class="block h-2 rounded bg-gradient-to-r from-green-500 to-green-400"
             :style="{ width: playerProgress }"
@@ -63,14 +58,14 @@
         </span>
       </div>
       <!-- Duration -->
-      <div
-        class="float-left w-7 h-7 leading-1 text-gray-400 mt-0 text-lg w-14 ml-8 mt-1"
-      >
+      <div class="w-14 h-7 leading-1 text-gray-400 text-lg ml-3 flex items-center">
         <span class="player-duration">{{ duration }}</span>
       </div>
     </div>
   </div>
 </template>
+
+
 
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
