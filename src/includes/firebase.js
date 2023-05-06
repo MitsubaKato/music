@@ -3,6 +3,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 
+
 const firebaseConfig = {
   apiKey: "AIzaSyCxjUCR3JogLtxLb1rZvwzHrOaeBg-mOQ0",
   authDomain: "test-c4f29.firebaseapp.com",
@@ -34,4 +35,5 @@ export {
   songsCollection,
   commentsCollection,
   storage,
+  imagesCollection,
 };

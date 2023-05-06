@@ -48,5 +48,7 @@ export default {
 
       commit("toggleAuth");
     },
+
+    
   },
 };

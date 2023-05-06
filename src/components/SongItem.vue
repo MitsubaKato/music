@@ -1,41 +1,118 @@
 <template>
-  <div
-    class="flex justify-between items-center pb-6 p-3 pl-6 cursor-pointer transition duration-400 hover:bg-gray-700"
-    :id="`song-id-${song.docID}`"
-  >
-    <div>
-      <router-link
-        :to="{ name: 'song', params: { id: song.docID } }"
-        class="font-bold block text-white"
-      >
-        {{ song.modified_name.split(".")[0] }}
-      </router-link>
-      <span class="text-gray-300 text-sm pt-2 block">
-        {{ song.genre }}
-      </span>
-      <span class="text-gray-500 text-sm">
-        {{ $t('fieldNames.uploadedBy') }} {{ song.display_name }}
-      </span>      
+  <div class="flex justify-between items-center pb-6 p-3 pl-6 cursor-pointer transition duration-400 hover:bg-gray-700" :id="`song-id-${song.docID}`">
+    <div class="flex-1">
+      <router-link :to="{ name: 'song', params: { id: song.docID } }" class="font-bold block text-white">{{ song.modified_name.split(".")[0] }}</router-link>
+      <span class="text-gray-300 text-sm pt-2 block">{{ song.genre }}</span>
+      <span class="text-gray-500 text-sm">{{ $t('fieldNames.uploadedBy') }} {{ song.display_name }}</span>      
     </div>
 
-    <div class="text-gray-600 text-lg">
-      <router-link
-        custom
-        :to="{ name: 'song', params: { id: song.docID }, hash: '#comments' }"
-        v-slot="{ navigate }"
-      >
-        <span class="comments" @click="navigate">
-          <i class="fa fa-comments text-gray-600"></i>
-          {{ song.comment_count }}
-        </span>
-      </router-link>
+    <span class="ml-3 text-gray-600">
+      <i class="fa fa-comments"></i>
+      {{ song.comment_count }}
+    </span>
+
+    <div class="flex items-center ml-5">
+      <button @click="addLike" :class="{ 'heart': liked, 'heartBeat': liked }">
+        <i class="fa fa-heart" :class="{ 'text-red-500': liked, 'text-gray-500': !liked }"></i>
+      </button>
+      
     </div>
   </div>
 </template>
 
+
+<style scoped>
+.heart {
+  position: relative;
+  animation-name: fade;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  opacity: 1;
+}
+
+.fadeOut {
+  animation-name: fade;
+  animation-duration: 0.5s;
+  animation-fill-mode: forwards;
+  opacity: 1;
+}
+
+@keyframes fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+</style>
+
+
 <script>
+import { db, auth } from "@/includes/firebase";
+
+const likesCollection = db.collection("likes");
+
 export default {
   name: "SongItem",
   props: ["song"],
+  data() {
+    return {
+      liked: false
+    };
+  },
+  async created() {
+    const user = auth.currentUser;
+
+    if (user) {
+      // Проверяем, лайкнул ли пользователь эту песню
+      const existingLike = await likesCollection
+        .where("songId", "==", this.song.docID)
+        .where("userId", "==", user.uid)
+        .get();
+
+      if (existingLike.size > 0) {
+        this.liked = true;
+      }
+    }
+  },
+  methods: {
+    async addLike() {
+      const user = auth.currentUser;
+
+      if (!user) {
+        alert("Please sign in to like songs.");
+        return;
+      }
+
+      if (this.liked) {
+        // Удалить лайк, если пользователь уже лайкнул эту песню
+        const existingLike = await likesCollection
+          .where("songId", "==", this.song.docID)
+          .where("userId", "==", user.uid)
+          .get();
+
+        existingLike.forEach(async (likeDoc) => {
+          await likeDoc.ref.delete();
+          this.liked = false;
+        });
+      } else {
+        // Добавить новый лайк, если пользователь еще не лайкнул эту песню
+        const like = {
+          songId: this.song.docID,
+          userId: user.uid,
+          userName: user.displayName,
+          songName: this.song.modified_name.split(".")[0]
+        };
+
+        await likesCollection.add(like);
+        this.liked = true;
+      }
+    }
+  }
 };
 </script>
+
+
+
+
