@@ -76,6 +76,7 @@ export default {
     },
     changeLocale() {
       this.$i18n.locale = this.$i18n.locale === "ru" ? "en" : "ru";
+      localStorage.setItem("locale", this.$i18n.locale);
     },
   },
 };

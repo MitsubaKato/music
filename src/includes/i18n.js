@@ -20,16 +20,19 @@ function loadLocaleMessages() {
   return messages;
 }
 
+const storedLocale = localStorage.getItem("locale");
+const defaultLocale = storedLocale || process.env.VUE_APP_I18N_LOCALE || "en";
+
 export default createI18n({
-  locale: process.env.VUE_APP_I18N_LOCALE || 'en',
-  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || 'en',
+  locale: defaultLocale,
+  fallbackLocale: process.env.VUE_APP_I18N_FALLBACK_LOCALE || "en",
   messages: loadLocaleMessages(),
   numberFormats: {
     en: {
-      currency: { style: 'currency', currency: 'USD' },
+      currency: { style: "currency", currency: "USD" },
     },
     ja: {
-      currency: { style: 'currency', currency: 'JPY' },
+      currency: { style: "currency", currency: "JPY" },
     },
   },
 });

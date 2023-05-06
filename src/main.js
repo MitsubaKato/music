@@ -14,6 +14,11 @@ ProgessBar(router);
 
 let app;
 
+const storedLocale = localStorage.getItem("locale");
+if (storedLocale) {
+  i18n.locale = storedLocale;
+}
+
 auth.onAuthStateChanged(() => {
   if (!app) {
     app = createApp(App).use(i18n);

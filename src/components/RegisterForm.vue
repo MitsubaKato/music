@@ -31,7 +31,6 @@
       />
       <ErrorMessage class="text-red-600" name="email" />
     </div>
-    <!-- Age -->
 
     <!-- Password -->
     <div class="mb-3">
@@ -59,8 +58,6 @@
       />
       <ErrorMessage class="text-red-600" name="confirm_password" />
     </div>
-    <!-- Country -->
-    <!-- TOS -->
 
     <button
       type="submit"
