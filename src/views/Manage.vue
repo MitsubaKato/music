@@ -14,7 +14,7 @@
           <h2 class="text-xl font-bold mb-4">{{ $t("fieldNames.Liked_Songs") }}</h2>
           <ul>
             <li v-for="(song, i) in likedSongs" :key="i" class="mb-2">
-              <router-link :to="{ name: 'song', params: { id: song.docID } }" class="text-blue-500 hover:text-blue-700">{{ song.modified_name.split(".")[0] }}</router-link>
+              <router-link :to="{ name: 'song', params: { id: song.docID } }" class="text-blue-500 hover:text-blue-700">{{ song.modified_name }}</router-link>
             </li>
           </ul>
         </div>
@@ -26,6 +26,7 @@
               class="fa fa-compact-disc float-right text-green-400 text-2xl"
             ></i>
           </div>
+
           <div class="p-6">
             <!-- Composition Items -->
             <composition-item
@@ -38,6 +39,7 @@
               :updateUnsavedFlag="updateUnsavedFlag"
             />
           </div>
+          
         </div>
       </div>
     </div>

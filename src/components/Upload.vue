@@ -1,5 +1,15 @@
 
 <template>
+
+<!-- Error Modal -->
+<div v-if="showErrorModal" class="fixed inset-0 flex items-center justify-center z-50" @click="showErrorModal = false">
+  <div class="bg-white rounded p-8" @click.stop>
+    <h2 class="text-xl font-bold mb-4">Error</h2>
+    <p>{{ errorMessage }}</p>
+    <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="showErrorModal = false">Close</button>
+  </div>
+</div>
+
   <div class="bg-white rounded border border-gray-200 relative flex flex-col">
     <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
       <span class="card-title">{{ $t("manage.upload") }}</span>
@@ -22,7 +32,7 @@
       </div>
       <label class="custom-file-upload">
         {{ $t('labels.upload') }}
-        <input type="file" multiple @change="upload($event)" style="display:none" />
+        <input type="file" accept="audio/mpeg" multiple @change="upload($event)" style="display:none" />
       </label>          
       <hr class="my-6" />
       <!-- Progess Bars -->
@@ -44,10 +54,12 @@
   </div>
 </template>
 
+
 <script>
 
 import { storage, auth, songsCollection } from "@/includes/firebase";
 import firebase from "firebase/app";
+
 
 export default {
   name: "Upload",
@@ -55,29 +67,39 @@ export default {
     return {
       is_dragover: false,
       uploads: [],
+      showErrorModal: false,
+      errorMessage: "",
     };
   },
   props: ["addSong"],
   methods: {
     async uploadFile(file) {
-      if (file.type !== "audio/mpeg") {
-        return;
-      }
+  if (file.type !== "audio/mpeg") {
+    return;
+  }
 
-      if (!navigator.onLine) {
-        this.uploads.push({
-          task: {},
-          current_progress: 100,
-          name: file.name,
-          variant: "bg-red-400",
-          icon: "fas fa-times",
-          text_class: "text-red-400",
-        });
-        return;
-      }
+  if (await this.fileAlreadyUploaded(file)) {
+    this.errorMessage = "This file has already been uploaded.";
+    this.showErrorModal = true;
+    return;
+  }
+
+  if (await this.fileAlreadyUploaded(file)) {
+    this.uploads.push({
+      task: {},
+      current_progress: 100,
+      name: file.name,
+      variant: "bg-yellow-400",
+      icon: "fas fa-exclamation",
+      text_class: "text-yellow-400",
+    });
+    return;
+  }
+
+      const fileNameWithoutExtension = file.name.replace(/\.mp3$/, '');
 
       const storageRef = storage.ref();
-      const songsRef = storageRef.child(`songs/${file.name}`);
+      const songsRef = storageRef.child(`songs/${fileNameWithoutExtension}`);
       const task = songsRef.put(file);
 
       const uploadIndex = this.uploads.push({
@@ -139,14 +161,29 @@ export default {
         upload.task.cancel();
       });
     },
+
+    async fileAlreadyUploaded(file) {
+  const querySnapshot = await songsCollection
+    .where("uid", "==", auth.currentUser.uid)
+    .where("original_name", "==", file.name)
+    .get();
+
+  return !querySnapshot.empty;
+},
+
   },
   beforeUnmount() {
     this.uploads.forEach((upload) => {
       upload.task.cancel();
     });
   },
+
+  
+
 };
 </script>
+
+
 
 <style>
 .custom-file-upload {
@@ -165,6 +202,15 @@ export default {
 
 .custom-file-upload:hover {
   background-color: #0056b3;
+}
+
+.fixed.inset-0 {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 </style>

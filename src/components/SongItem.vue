@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-between items-center pb-6 p-3 pl-6 cursor-pointer transition duration-400 hover:bg-gray-700" :id="`song-id-${song.docID}`">
     <div class="flex-1">
-      <router-link :to="{ name: 'song', params: { id: song.docID } }" class="font-bold block text-white">{{ song.modified_name.split(".")[0] }}</router-link>
+      <router-link :to="{ name: 'song', params: { id: song.docID } }" class="font-bold block text-white">{{ song.modified_name }}</router-link>
       <span class="text-gray-300 text-sm pt-2 block">{{ song.genre }}</span>
       <span class="text-gray-500 text-sm">{{ $t('fieldNames.uploadedBy') }} {{ song.display_name }}</span>      
     </div>
@@ -118,7 +118,7 @@ export default {
           songId: this.song.docID,
           userId: user.uid,
           userName: user.displayName,
-          songName: this.song.modified_name.split(".")[0]
+          songName: this.song.modified_name
         };
 
         await likesCollection.add(like);
