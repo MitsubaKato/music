@@ -8,6 +8,17 @@
         <div
           class="bg-white rounded border border-gray-200 relative flex flex-col"
         >
+        <!-- Liked Songs -->
+
+        <div class="p-6">
+          <h2 class="text-xl font-bold mb-4">Liked Songs</h2>
+          <ul>
+            <li v-for="(song, i) in likedSongs" :key="i" class="mb-2">
+              <router-link :to="{ name: 'song', params: { id: song.docID } }" class="text-blue-500 hover:text-blue-700">{{ song.modified_name.split(".")[0] }}</router-link>
+            </li>
+          </ul>
+        </div>
+
           <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
             <span class="card-title">{{ $t("manage.my_songs") }}, {{ NameUser }} </span>
             
@@ -37,7 +48,7 @@
 // import store from '@/store';
 import AppUpload from "@/components/Upload.vue";
 import CompositionItem from "@/components/CompositionItem.vue";
-import { songsCollection, auth } from "@/includes/firebase";
+import { likesCollection, songsCollection, auth } from "@/includes/firebase";
 
 export default {
   name: "manage",
@@ -48,34 +59,72 @@ export default {
   data() {
     return {
       songs: [],
+      likedSongs: [],
       unsavedFlag: false,
       unsubscribeAuth: null,
-      NameUser: auth.currentUser.displayName,
+      NameUser: "",
     };
   },
 
   created() {
-    this.unsubscribeAuth = auth.onAuthStateChanged((user) => {
-      if (!user) {
-        this.$router.push({ name: "Home" });
-      }
-    });
-  },
+  this.unsubscribeAuth = auth.onAuthStateChanged((user) => {
+    if (user) {
+      this.NameUser = user.displayName;
+      this.fetchUserSongs();
+      this.fetchLikedSongs();
+    } else {
+      this.$router.push({ name: "Home" });
+    }
+  });
+},
+
+  
   beforeUnmount() {
     if (this.unsubscribeAuth) {
       this.unsubscribeAuth();
     }
   },
 
-  handleClick() {},
-  async created() {
-    const snapshot = await songsCollection
-      .where("uid", "==", auth.currentUser.uid)
-      .get();
-
-    snapshot.forEach(this.addSong);
-  },
   methods: {
+
+
+    async fetchUserSongs() {
+      const userId = auth.currentUser.uid;
+      const snapshot = await songsCollection.where("uid", "==", userId).get();
+      this.songs = [];
+
+      snapshot.forEach((document) => {
+        const song = {
+          ...document.data(),
+          docID: document.id,
+        };
+
+        this.songs.push(song);
+      });
+    },
+
+    async fetchLikedSongs() {
+  const userId = auth.currentUser.uid;
+  const likesSnapshot = await likesCollection.where("userId", "==", userId).get();
+
+  // Создайте массив промисов для запросов песен
+  const songPromises = likesSnapshot.docs.map((likeDoc) => {
+    const likeData = likeDoc.data();
+    return songsCollection.doc(likeData.songId).get();
+  });
+
+  // Выполните все промисы параллельно
+  const songSnapshots = await Promise.all(songPromises);
+
+  // Добавьте информацию о песнях в массив likedSongs
+  songSnapshots.forEach((songSnapshot) => {
+    const songData = songSnapshot.data();
+    this.likedSongs.push({
+      ...songData,
+      docID: songSnapshot.id,
+    });
+  });
+},
     updateSong(i, values) {
       this.songs[i].modified_name = values.modified_name;
       this.songs[i].genre = values.genre;
@@ -106,16 +155,5 @@ export default {
       next(leave);
     }
   },
-  // beforeRouteLeave(to, from, next) {
-  //   this.$refs.upload.cancelUploads();
-  //   next();
-  // },
-  // beforeRouteEnter(to, from, next) {
-  //   if (store.state.userLoggedIn) {
-  //     next();
-  //   } else {
-  //     next({ name: 'home' });
-  //   }
-  // },
 };
 </script>
