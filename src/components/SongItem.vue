@@ -25,14 +25,14 @@
 .heart {
   position: relative;
   animation-name: fade;
-  animation-duration: 0.5s;
+  animation-duration: 0.2s;
   animation-fill-mode: forwards;
   opacity: 1;
 }
 
 .fadeOut {
   animation-name: fade;
-  animation-duration: 0.5s;
+  animation-duration: 0.2s;
   animation-fill-mode: forwards;
   opacity: 1;
 }
@@ -49,9 +49,8 @@
 
 
 <script>
-import { db, auth } from "@/includes/firebase";
+import { likesCollection, auth } from "@/includes/firebase";
 
-const likesCollection = db.collection("likes");
 
 export default {
   name: "SongItem",
@@ -62,21 +61,38 @@ export default {
     };
   },
   async created() {
-    const user = auth.currentUser;
-
-    if (user) {
-      // Проверяем, лайкнул ли пользователь эту песню
-      const existingLike = await likesCollection
-        .where("songId", "==", this.song.docID)
-        .where("userId", "==", user.uid)
-        .get();
-
-      if (existingLike.size > 0) {
-        this.liked = true;
+    await this.checkUserLike();
+  },
+  mounted() {
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        this.liked = false;
+      } else {
+        await this.checkUserLike();
       }
-    }
+    });
   },
   methods: {
+
+    async checkUserLike() {
+      const user = auth.currentUser;
+
+      if (user) {
+        // Проверяем, лайкнул ли пользователь эту песню
+        const existingLike = await likesCollection
+          .where("songId", "==", this.song.docID)
+          .where("userId", "==", user.uid)
+          .get();
+
+        if (existingLike.size > 0) {
+          this.liked = true;
+        } else {
+          this.liked = false;
+        }
+      } else {
+        this.liked = false;
+      }
+    },
     async addLike() {
       const user = auth.currentUser;
 

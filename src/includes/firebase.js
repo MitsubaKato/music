@@ -27,6 +27,8 @@ const usersCollection = db.collection("users");
 const songsCollection = db.collection("songs");
 const commentsCollection = db.collection("comments");
 const imagesCollection = db.collection("images");
+const likesCollection = db.collection("likes");
+
 
 export {
   auth,
@@ -36,4 +38,5 @@ export {
   commentsCollection,
   storage,
   imagesCollection,
+  likesCollection,
 };
