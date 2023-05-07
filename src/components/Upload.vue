@@ -96,10 +96,8 @@ export default {
     return;
   }
 
-      const fileNameWithoutExtension = file.name.replace(/\.mp3$/, '');
-
       const storageRef = storage.ref();
-      const songsRef = storageRef.child(`songs/${fileNameWithoutExtension}`);
+      const songsRef = storageRef.child(`songs/${file.name}`);
       const task = songsRef.put(file);
 
       const uploadIndex = this.uploads.push({
