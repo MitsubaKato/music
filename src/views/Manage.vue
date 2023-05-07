@@ -11,7 +11,7 @@
         <!-- Liked Songs -->
 
         <div class="p-6">
-          <h2 class="text-xl font-bold mb-4">Liked Songs</h2>
+          <h2 class="text-xl font-bold mb-4">{{ $t("fieldNames.Liked_Songs") }}</h2>
           <ul>
             <li v-for="(song, i) in likedSongs" :key="i" class="mb-2">
               <router-link :to="{ name: 'song', params: { id: song.docID } }" class="text-blue-500 hover:text-blue-700">{{ song.modified_name.split(".")[0] }}</router-link>

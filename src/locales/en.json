@@ -62,7 +62,8 @@
     "password": "Password",
     "name": "Name",
     "confirm_password": "1",
-    "uploadedBy": "Uploaded By"
+    "uploadedBy": "Uploaded By",
+    "Liked_Songs": "Liked Songs"
   },
   "alert": {
     "update": "Please wait! Updating song info.",
