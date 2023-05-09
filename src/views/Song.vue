@@ -70,7 +70,7 @@
               class="py-1.5 px-3 rounded text-white bg-green-600 block"
               :disabled="comment_in_submission"
             >
-              Submit
+              {{ $t("fieldNames.submit") }}
             </button>
           </vee-form>
           <!-- Comment Sorting -->
@@ -78,8 +78,8 @@
             v-model="sort"
             class="block mt-4 py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
           >
-            <option value="1">Latest</option>
-            <option value="2">Oldest</option>
+            <option value="1">{{ $t("fieldNames.latest") }}</option>
+            <option value="2">{{ $t("fieldNames.older") }}</option>
           </select>
         </div>
       </div>
@@ -119,11 +119,12 @@ export default {
       song: {},
       schema: {
         comment: "required|min:3",
+        comment_alert_timeout: null,
       },
       comment_in_submission: false,
       comment_show_alert: false,
       comment_alert_variant: "bg-blue-500",
-      comment_alert_message: "Please wait! Your comment is being submitted",
+      comment_alert_message: this.$t("comment.submitted"),
       comments: [],
       sort: "1",
     };
@@ -169,7 +170,7 @@ export default {
       this.comment_show_alert = true;
       this.comment_alert_variant = "bg-blue-500";
       this.comment_alert_message =
-        "Please wait! Your comment is being submitted";
+      this.$t("comment.submitted")
 
       const comment = {
         content: values.comment,
@@ -190,9 +191,13 @@ export default {
 
       this.comment_in_submission = false;
       this.comment_alert_variant = "bg-green-500";
-      this.comment_alert_message = "Comment added!";
+      this.comment_alert_message = this.$t("comment.added");
 
       resetForm();
+
+      this.comment_alert_timeout = setTimeout(() => {
+    this.comment_show_alert = false;
+  }, 3000);
     },
     async getComments() {
       const snapshots = await commentsCollection
@@ -222,5 +227,10 @@ export default {
       });
     },
   },
+
+  beforeUnmount() {
+  clearTimeout(this.comment_alert_timeout);
+  // ... ваш код
+},
 };
 </script>

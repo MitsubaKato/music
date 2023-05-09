@@ -63,7 +63,10 @@
     "name": "Name",
     "confirm_password": "1",
     "uploadedBy": "Uploaded By",
-    "Liked_Songs": "Liked Songs"
+    "Liked_Songs": "Liked Songs",
+    "submit": "Submit",
+    "latest": "Latest",
+    "older": "Oldest"
   },
   "alert": {
     "update": "Please wait! Updating song info.",
@@ -78,6 +81,10 @@
   },
   "labels": {
     "upload": "File"
-  }
+  },
+  "comment": {
+    "submitted": "Please wait! Your comment is being submitted",
+    "added": "Comment added!"
+  } 
   
 }
