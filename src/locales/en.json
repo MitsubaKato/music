@@ -26,7 +26,7 @@
     "comment_count": "No comments | 1 comment | {count} comments"
   },
   "header": {
-    "manage": "Manage",
+    "manage": "Upload",
     "logout": "Logout",
     "log-reg": "Login / Register"
   },
@@ -85,6 +85,11 @@
   "comment": {
     "submitted": "Please wait! Your comment is being submitted",
     "added": "Comment added!"
-  } 
+  }, 
+  "profile": {
+    "hello": "Hello",
+    "likes": "Tracks you like",
+    "header": "Profile"
+  }
   
 }

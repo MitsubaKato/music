@@ -25,11 +25,21 @@
             </a>
           </li>
           <template v-else>
+            <!-- Profile Link -->
+
+            <li>
+              <router-link class="px-2 text-white" :to="{ name: 'profile' }">
+                {{ $t("profile.header") }}
+              </router-link>
+            </li>
+
+
             <li>
               <router-link class="px-2 text-white" :to="{ name: 'manage' }">
                 {{ $t("header.manage") }}
               </router-link>
             </li>
+            
             <li>
               <a class="px-2 text-white" href="#" @click.prevent="signout">{{
                 $t("header.logout")

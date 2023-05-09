@@ -5,6 +5,7 @@ const Home = () => import('@/views/Home.vue');
 const Manage = () => import(/* webpackChunkName: "groupedChunk" */'@/views/Manage.vue');
 const Song = () => import(/* webpackChunkName: "groupedChunk" */'@/views/Song.vue');
 const NotFound = () => import('@/views/NotFound.vue');
+const Profile = () => import('@/views/Profile.vue'); 
 
 const routes = [
   {
@@ -23,6 +24,14 @@ const routes = [
     beforeEnter: (to, from, next) => {
       next();
     },
+  },
+  {
+    name: 'profile', 
+    path: '/profile',
+    meta: {
+      requiresAuth: true,
+    },
+    component: Profile,
   },
   {
     path: '/manage',
