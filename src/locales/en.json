@@ -5,7 +5,10 @@
   },
   "manage": {
     "my_songs": "Your songs",
-    "upload": "Upload"
+    "upload": "Upload",
+    "fileExist": "This file has already been uploaded.",
+    "error": "File upload error",
+    "close": "Close"
   },
   "register": {
     "name": "Name",

@@ -4,9 +4,9 @@
 <!-- Error Modal -->
 <div v-if="showErrorModal" class="fixed inset-0 flex items-center justify-center z-50" @click="showErrorModal = false">
   <div class="bg-white rounded p-8" @click.stop>
-    <h2 class="text-xl font-bold mb-4">Error</h2>
+    <h2 class="text-xl font-bold mb-4">{{ $t('manage.error') }}</h2>
     <p>{{ errorMessage }}</p>
-    <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="showErrorModal = false">Close</button>
+    <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="showErrorModal = false">{{ $t('manage.close') }}</button>
   </div>
 </div>
 
@@ -38,8 +38,13 @@
       <!-- Progess Bars -->
       <div class="mb-4" v-for="upload in uploads" :key="upload.name">
         <!-- File Name -->
-        <div class="font-bold text-sm" :class="upload.text_class">
-          <i :class="upload.icon"></i> {{ upload.name }}
+        <div class="font-bold text-sm flex justify-between items-center" :class="upload.text_class">
+          <span>
+            <i :class="upload.icon"></i> {{ upload.name }}
+          </span>
+          <button v-if="upload.variant === 'bg-yellow-400'" class="text-red-600" @click="removeUpload(upload)">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
         <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
           <!-- Inner Progress Bar -->
@@ -73,18 +78,25 @@ export default {
   },
   props: ["addSong"],
   methods: {
+
+    removeUpload(upload) {
+    if (upload.task && upload.task.cancel) {
+      upload.task.cancel();
+    }
+    const index = this.uploads.indexOf(upload);
+    if (index !== -1) {
+      this.uploads.splice(index, 1);
+    }
+  },
     async uploadFile(file) {
   if (file.type !== "audio/mpeg") {
     return;
   }
 
   if (await this.fileAlreadyUploaded(file)) {
-    this.errorMessage = "This file has already been uploaded.";
+    this.errorMessage = this.$t("manage.fileExist");
     this.showErrorModal = true;
-    return;
-  }
 
-  if (await this.fileAlreadyUploaded(file)) {
     this.uploads.push({
       task: {},
       current_progress: 100,
@@ -93,6 +105,7 @@ export default {
       icon: "fas fa-exclamation",
       text_class: "text-yellow-400",
     });
+
     return;
   }
 
@@ -153,6 +166,7 @@ export default {
       for (const file of files) {
                 await this.uploadFile(file);
       }
+      $event.target.value = null;
     },
     cancelUploads() {
       this.uploads.forEach((upload) => {
