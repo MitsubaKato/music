@@ -79,8 +79,6 @@ export default {
     }
   });
 },
-
-  
   beforeUnmount() {
     if (this.unsubscribeAuth) {
       this.unsubscribeAuth();
@@ -88,8 +86,6 @@ export default {
   },
 
   methods: {
-
-
     async fetchUserSongs() {
       const userId = auth.currentUser.uid;
       const snapshot = await songsCollection.where("uid", "==", userId).get();
@@ -106,19 +102,18 @@ export default {
     },
 
     async fetchLikedSongs() {
-  const userId = auth.currentUser.uid;
-  const likesSnapshot = await likesCollection.where("userId", "==", userId).get();
 
-  // Создайте массив промисов для запросов песен
-  const songPromises = likesSnapshot.docs.map((likeDoc) => {
-    const likeData = likeDoc.data();
-    return songsCollection.doc(likeData.songId).get();
-  });
+      const userId = auth.currentUser.uid;
+      const likesSnapshot = await likesCollection.where("userId", "==", userId).get();
 
-  // Выполните все промисы параллельно
+     // Создайте массив промисов для запросов песен
+      const songPromises = likesSnapshot.docs.map((likeDoc) => {
+      const likeData = likeDoc.data();
+      return songsCollection.doc(likeData.songId).get();
+    });
+
   const songSnapshots = await Promise.all(songPromises);
 
-  // Добавьте информацию о песнях в массив likedSongs
   songSnapshots.forEach((songSnapshot) => {
     const songData = songSnapshot.data();
     this.likedSongs.push({
