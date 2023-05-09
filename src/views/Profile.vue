@@ -36,6 +36,7 @@ export default {
       songs: [],
       likedSongs: [],
       unsubscribeAuth: null,
+      NameUser: "",
     };
   },
   created() {

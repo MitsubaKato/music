@@ -126,7 +126,22 @@ export default {
       this.songs[i].modified_name = values.modified_name;
       this.songs[i].genre = values.genre;
     },
-    removeSong(i) {
+
+    async deleteLikes(songId) {
+      const likesSnapshot = await likesCollection.where("songId", "==", songId).get();
+      const batch = likesCollection.firestore.batch();
+
+      likesSnapshot.docs.forEach((doc) => {
+        batch.delete(doc.ref);
+      });
+
+      await batch.commit();
+    },
+    
+    async removeSong(i) {
+      const songId = this.songs[i].docID;
+      await this.deleteLikes(songId);
+      await songsCollection.doc(songId).delete();
       this.songs.splice(i, 1);
     },
     addSong(document) {
