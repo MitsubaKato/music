@@ -6,6 +6,7 @@ const Manage = () => import(/* webpackChunkName: "groupedChunk" */'@/views/Manag
 const Song = () => import(/* webpackChunkName: "groupedChunk" */'@/views/Song.vue');
 const NotFound = () => import('@/views/NotFound.vue');
 const Profile = () => import('@/views/Profile.vue'); 
+const UserProfile = () => import('@/views/UserProfile.vue'); 
 
 const routes = [
   {
@@ -32,6 +33,12 @@ const routes = [
       requiresAuth: true,
     },
     component: Profile,
+  },
+  {
+    path: '/user/:id',
+    name: 'UserProfile',
+    component: UserProfile,
+    props: true
   },
   {
     path: '/manage',

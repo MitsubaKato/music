@@ -1,9 +1,11 @@
 <template>
-  <div class="flex justify-between items-center pb-6 p-3 pl-6 cursor-pointer transition duration-400 hover:bg-gray-700" :id="`song-id-${song.docID}`">
+  <div class="flex justify-between items-center pb-6 p-3 pl-6 " :id="`song-id-${song.docID}`">
     <div class="flex-1">
       <router-link :to="{ name: 'song', params: { id: song.docID } }" class="font-bold block text-white">{{ song.modified_name }}</router-link>
       <span class="text-gray-300 text-sm pt-2 block">{{ song.genre }}</span>
-      <span class="text-gray-500 text-sm">{{ $t('fieldNames.uploadedBy') }} {{ song.display_name }}</span>      
+      <router-link :to="{ name: 'UserProfile', params: { id: song.uid } }" class="song-owner">
+        <span class="text-gray-500 text-sm">{{ $t('fieldNames.uploadedBy') }} <span class="text">{{ song.display_name }}</span></span>
+      </router-link>      
     </div>
 
     <span class="ml-3 text-gray-600">
@@ -30,6 +32,8 @@
   opacity: 1;
 }
 
+
+
 .fadeOut {
   animation-name: fade;
   animation-duration: 0.2s;
@@ -44,6 +48,15 @@
   to {
     opacity: 0.5;
   }
+}
+
+.text:hover {
+  color: orange;
+}
+
+.text {
+  color: gray;
+  transition: color 0.3s ease;
 }
 </style>
 
