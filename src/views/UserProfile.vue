@@ -27,13 +27,14 @@
   </template>
 
 <script>
-import { usersCollection, songsCollection } from "@/includes/firebase";
+import { auth, usersCollection, songsCollection } from "@/includes/firebase";
 
 export default {
   data() {
     return {
       user: {},
       songs: [],
+      unsubscribeAuth: null
     };
   },
   props: {
@@ -42,16 +43,28 @@ export default {
       required: true
     }
   },
-  async created() {
-    const userSnapshot = await usersCollection.doc(this.id).get();
-    this.user = userSnapshot.data();
-    const songsSnapshot = await songsCollection.where('uid', '==', this.id).get();
-    this.songs = songsSnapshot.docs.map(doc => {
-      return {
-        ...doc.data(),
-        docID: doc.id,
+  created() {
+    this.unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        // User is logged in
+        const userSnapshot = await usersCollection.doc(this.id).get();
+        this.user = userSnapshot.data();
+        const songsSnapshot = await songsCollection.where('uid', '==', this.id).get();
+        this.songs = songsSnapshot.docs.map(doc => {
+          return {
+            ...doc.data(),
+            docID: doc.id,
+          }
+        });
+      } else {
+        // User is logged out, redirect to Home
+        this.$router.push({ name: "home" });
       }
     });
+  },
+  beforeDestroy() {
+    // Clean up the listener when the component is destroyed
+    this.unsubscribeAuth();
   }
 };
 </script>

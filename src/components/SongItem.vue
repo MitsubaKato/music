@@ -110,7 +110,7 @@ export default {
       const user = auth.currentUser;
 
       if (!user) {
-        alert("Please sign in to like songs.");
+        alert("Please sign in to like songs."); // перевод
         return;
       }
 

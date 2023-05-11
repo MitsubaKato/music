@@ -33,7 +33,12 @@ export default {
     },
     async login({ commit }, payload) {
       await auth.signInWithEmailAndPassword(payload.email, payload.password);
-
+  
+      // Получение URL фотографии из Firestore и обновление photoURL текущего пользователя
+      const userDoc = await usersCollection.doc(auth.currentUser.uid).get();
+      const userData = userDoc.data();
+      await auth.currentUser.updateProfile({ photoURL: userData.photoURL });
+  
       commit("toggleAuth");
     },
     init_login({ commit }) {
