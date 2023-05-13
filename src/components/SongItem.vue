@@ -3,9 +3,12 @@
     <div class="flex-1">
       <router-link :to="{ name: 'song', params: { id: song.docID } }" class="font-bold block text-white">{{ song.modified_name }}</router-link>
       <span class="text-gray-300 text-sm pt-2 block">{{ song.genre }}</span>
-      <router-link :to="{ name: 'UserProfile', params: { id: song.uid } }" class="song-owner">
-        <span class="text-gray-500 text-sm">{{ $t('fieldNames.uploadedBy') }} <span class="text">{{ song.display_name }}</span></span>
-      </router-link>      
+      
+      <span class="song-owner" @click="checkAuth">
+        <span class="text-gray-500 text-sm">{{ $t('fieldNames.uploadedBy') }} <span class="cursor-pointer text">{{ song.display_name }}</span>
+      </span>
+</span> 
+            
     </div>
 
     <span class="ml-3 text-gray-600">
@@ -31,9 +34,6 @@
   animation-fill-mode: forwards;
   opacity: 1;
 }
-
-
-
 .fadeOut {
   animation-name: fade;
   animation-duration: 0.2s;
@@ -86,6 +86,14 @@ export default {
     });
   },
   methods: {
+
+    checkAuth() {
+    if (!auth.currentUser) {
+      this.$emit('showAuthModal');
+    } else {
+      this.$router.push({ name: 'UserProfile', params: { id: this.song.uid } });
+    }
+  },
 
     async checkUserLike() {
       const user = auth.currentUser;
