@@ -32,7 +32,7 @@
       <div class="bg-gray-800 rounded border-gray-200 relative flex flex-col">
         <!-- Playlist -->
         <div id="playlist">
-          <app-song-item v-for="song in songs" :key="song.docID" :song="song" />
+          <app-song-item v-for="song in songs" :key="song.docID" :song="song" @showAuthModal="showAuthModal"/>
         </div>
         <!-- .. end Playlist -->
       </div>
@@ -65,6 +65,10 @@ export default {
     window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
+
+    showAuthModal() {
+    this.$store.commit('toggleAuthModal');
+  },
     handleScroll() {
       const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
       const bottomOfWindow = Math.round(scrollTop + clientHeight) >= scrollHeight;
