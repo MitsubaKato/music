@@ -5,41 +5,31 @@
         <app-upload ref="upload" :addSong="addSong" />
       </div>
       <div class="col-span-2">
-        <div
-          class="bg-white rounded border border-gray-200 relative flex flex-col"
-        >
-        <!-- Liked Songs -->
+        <div class="bg-white rounded border border-gray-200 relative flex flex-col">
+          <!-- Liked Songs -->
 
-        <div class="p-6">
-          <h2 class="text-xl font-bold mb-4">{{ $t("fieldNames.Liked_Songs") }}</h2>
-          <ul>
-            <li v-for="(song, i) in likedSongs" :key="i" class="mb-2">
-              <router-link :to="{ name: 'song', params: { id: song.docID } }" class="text-blue-500 hover:text-blue-700">{{ song.modified_name }}</router-link>
-            </li>
-          </ul>
-        </div>
+          <div class="p-6">
+            <h2 class="text-xl font-bold mb-4">{{ $t("fieldNames.Liked_Songs") }}</h2>
+            <ul>
+              <li v-for="(song, i) in likedSongs" :key="i" class="mb-2">
+                <router-link :to="{ name: 'song', params: { id: song.docID } }"
+                  class="text-blue-500 hover:text-blue-700">{{ song.modified_name }}</router-link>
+              </li>
+            </ul>
+          </div>
 
           <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
             <span class="card-title">{{ $t("manage.my_songs") }}, {{ NameUser }} </span>
-            
-            <i
-              class="fa fa-compact-disc float-right text-green-400 text-2xl"
-            ></i>
+
+            <i class="fa fa-compact-disc float-right text-green-400 text-2xl"></i>
           </div>
 
           <div class="p-6">
             <!-- Composition Items -->
-            <composition-item
-              v-for="(song, i) in songs"
-              :key="song.docID"
-              :song="song"
-              :updateSong="updateSong"
-              :index="i"
-              :removeSong="removeSong"
-              :updateUnsavedFlag="updateUnsavedFlag"
-            />
+            <composition-item v-for="(song, i) in songs" :key="song.docID" :song="song" :updateSong="updateSong"
+              :index="i" :removeSong="removeSong" :updateUnsavedFlag="updateUnsavedFlag" />
           </div>
-          
+
         </div>
       </div>
     </div>
@@ -69,16 +59,16 @@ export default {
   },
 
   created() {
-  this.unsubscribeAuth = auth.onAuthStateChanged((user) => {
-    if (user) {
-      this.NameUser = user.displayName;
-      this.fetchUserSongs();
-      this.fetchLikedSongs();
-    } else {
-      this.$router.push({ name: "home" });
-    }
-  });
-},
+    this.unsubscribeAuth = auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.NameUser = user.displayName;
+        this.fetchUserSongs();
+        this.fetchLikedSongs();
+      } else {
+        this.$router.push({ name: "home" });
+      }
+    });
+  },
   beforeUnmount() {
     if (this.unsubscribeAuth) {
       this.unsubscribeAuth();
@@ -106,22 +96,22 @@ export default {
       const userId = auth.currentUser.uid;
       const likesSnapshot = await likesCollection.where("userId", "==", userId).get();
 
-     // Создайте массив промисов для запросов песен
+      // Создайте массив промисов для запросов песен
       const songPromises = likesSnapshot.docs.map((likeDoc) => {
-      const likeData = likeDoc.data();
-      return songsCollection.doc(likeData.songId).get();
-    });
+        const likeData = likeDoc.data();
+        return songsCollection.doc(likeData.songId).get();
+      });
 
-  const songSnapshots = await Promise.all(songPromises);
+      const songSnapshots = await Promise.all(songPromises);
 
-  songSnapshots.forEach((songSnapshot) => {
-    const songData = songSnapshot.data();
-    this.likedSongs.push({
-      ...songData,
-      docID: songSnapshot.id,
-    });
-  });
-},
+      songSnapshots.forEach((songSnapshot) => {
+        const songData = songSnapshot.data();
+        this.likedSongs.push({
+          ...songData,
+          docID: songSnapshot.id,
+        });
+      });
+    },
     updateSong(i, values) {
       this.songs[i].modified_name = values.modified_name;
       this.songs[i].genre = values.genre;
@@ -137,7 +127,7 @@ export default {
 
       await batch.commit();
     },
-    
+
     async removeSong(i) {
       const songId = this.songs[i].docID;
       await this.deleteLikes(songId);

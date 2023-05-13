@@ -62,7 +62,7 @@ export default {
       if (!state.sound.playing) {
         return;
       }
-    
+
       if (state.sound.playing()) {
         state.sound.pause();
       } else {
@@ -74,7 +74,7 @@ export default {
       if (state.positionUpdateInterval !== null) {
         clearInterval(state.positionUpdateInterval);
       }
-    
+
       state.positionUpdateInterval = setInterval(() => {
         commit('updatePosition');
       }, 100);
@@ -83,20 +83,20 @@ export default {
       if (!state.sound.playing) {
         return;
       }
-    
+
       const { x, width } = payload.currentTarget.getBoundingClientRect();
       const clickX = payload.clientX - x;
       const percentage = clickX / width;
       const seconds = state.sound.duration() * percentage;
-    
+
       state.sound.seek(seconds);
       dispatch('progress');
     },
-    
-      stopAudio({ state }) {
-        if (state.sound.playing()) {
-          state.sound.stop(); // Используйте метод stop Howler.js, чтобы остановить воспроизведение звука
-        }
-      },
+
+    stopAudio({ state }) {
+      if (state.sound.playing()) {
+        state.sound.stop(); // Используйте метод stop Howler.js, чтобы остановить воспроизведение звука
+      }
+    },
   },
 };

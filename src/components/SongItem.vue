@@ -1,14 +1,16 @@
 <template>
   <div class="flex justify-between items-center pb-6 p-3 pl-6 " :id="`song-id-${song.docID}`">
     <div class="flex-1">
-      <router-link :to="{ name: 'song', params: { id: song.docID } }" class="font-bold block text-white">{{ song.modified_name }}</router-link>
+      <router-link :to="{ name: 'song', params: { id: song.docID } }" class="font-bold block text-white">{{
+        song.modified_name }}</router-link>
       <span class="text-gray-300 text-sm pt-2 block">{{ song.genre }}</span>
-      
+
       <span class="song-owner" @click="checkAuth">
-        <span class="text-gray-500 text-sm">{{ $t('fieldNames.uploadedBy') }} <span class="cursor-pointer text">{{ song.display_name }}</span>
+        <span class="text-gray-500 text-sm">{{ $t('fieldNames.uploadedBy') }} <span class="cursor-pointer text">{{
+          song.display_name }}</span>
+        </span>
       </span>
-</span> 
-            
+
     </div>
 
     <span class="ml-3 text-gray-600">
@@ -20,7 +22,7 @@
       <button @click="addLike" :class="{ 'heart': liked, 'heartBeat': liked }">
         <i class="fa fa-heart" :class="{ 'text-red-500': liked, 'text-gray-500': !liked }"></i>
       </button>
-      
+
     </div>
   </div>
 </template>
@@ -34,6 +36,7 @@
   animation-fill-mode: forwards;
   opacity: 1;
 }
+
 .fadeOut {
   animation-name: fade;
   animation-duration: 0.2s;
@@ -45,6 +48,7 @@
   from {
     opacity: 1;
   }
+
   to {
     opacity: 0.5;
   }
@@ -86,12 +90,12 @@ export default {
   },
   methods: {
     checkAuth() {
-    if (!auth.currentUser) {
-      this.$emit('showAuthModal');
-    } else {
-      this.$router.push({ name: 'UserProfile', params: { id: this.song.uid } });
-    }
-  },
+      if (!auth.currentUser) {
+        this.$emit('showAuthModal');
+      } else {
+        this.$router.push({ name: 'UserProfile', params: { id: this.song.uid } });
+      }
+    },
 
     async checkUserLike() {
       const user = auth.currentUser;

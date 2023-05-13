@@ -1,14 +1,14 @@
 
 <template>
-
-<!-- Error Modal -->
-<div v-if="showErrorModal" class="fixed inset-0 flex items-center justify-center z-50" @click="showErrorModal = false">
-  <div class="bg-white rounded p-8" @click.stop>
-    <h2 class="text-xl font-bold mb-4">{{ $t('manage.error') }}</h2>
-    <p>{{ errorMessage }}</p>
-    <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="showErrorModal = false">{{ $t('manage.close') }}</button>
+  <!-- Error Modal -->
+  <div v-if="showErrorModal" class="fixed inset-0 flex items-center justify-center z-50" @click="showErrorModal = false">
+    <div class="bg-white rounded p-8" @click.stop>
+      <h2 class="text-xl font-bold mb-4">{{ $t('manage.error') }}</h2>
+      <p>{{ errorMessage }}</p>
+      <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        @click="showErrorModal = false">{{ $t('manage.close') }}</button>
+    </div>
   </div>
-</div>
 
   <div class="bg-white rounded border border-gray-200 relative flex flex-col">
     <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
@@ -19,21 +19,16 @@
       <!-- Upload Dropbox -->
       <div
         class="w-full px-10 py-20 rounded text-center cursor-pointer border border-dashed border-gray-400 text-gray-400 transition duration-500 hover:text-white hover:bg-green-400 hover:border-green-400 hover:border-solid"
-        :class="{ 'bg-green-400 border-green-400 border-solid': is_dragover }"
-        @drag.prevent.stop=""
-        @dragstart.prevent.stop=""
-        @dragend.prevent.stop="is_dragover = false"
-        @dragover.prevent.stop="is_dragover = true"
-        @dragenter.prevent.stop="is_dragover = true"
-        @dragleave.prevent.stop="is_dragover = false"
-        @drop.prevent.stop="upload($event)"
-      >
+        :class="{ 'bg-green-400 border-green-400 border-solid': is_dragover }" @drag.prevent.stop=""
+        @dragstart.prevent.stop="" @dragend.prevent.stop="is_dragover = false" @dragover.prevent.stop="is_dragover = true"
+        @dragenter.prevent.stop="is_dragover = true" @dragleave.prevent.stop="is_dragover = false"
+        @drop.prevent.stop="upload($event)">
         <h5>{{ $t("files.drop") }}</h5>
       </div>
       <label class="custom-file-upload">
         {{ $t('labels.upload') }}
         <input type="file" accept="audio/mpeg" multiple @change="upload($event)" style="display:none" />
-      </label>          
+      </label>
       <hr class="my-6" />
       <!-- Progess Bars -->
       <div class="mb-4" v-for="upload in uploads" :key="upload.name">
@@ -48,11 +43,8 @@
         </div>
         <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
           <!-- Inner Progress Bar -->
-          <div
-            class="transition-all progress-bar"
-            :class="upload.variant"
-            :style="{ width: upload.current_progress + '%' }"
-          ></div>
+          <div class="transition-all progress-bar" :class="upload.variant"
+            :style="{ width: upload.current_progress + '%' }"></div>
         </div>
       </div>
     </div>
@@ -80,34 +72,34 @@ export default {
   methods: {
 
     removeUpload(upload) {
-    if (upload.task && upload.task.cancel) {
-      upload.task.cancel();
-    }
-    const index = this.uploads.indexOf(upload);
-    if (index !== -1) {
-      this.uploads.splice(index, 1);
-    }
-  },
+      if (upload.task && upload.task.cancel) {
+        upload.task.cancel();
+      }
+      const index = this.uploads.indexOf(upload);
+      if (index !== -1) {
+        this.uploads.splice(index, 1);
+      }
+    },
     async uploadFile(file) {
-  if (file.type !== "audio/mpeg") {
-    return;
-  }
+      if (file.type !== "audio/mpeg") {
+        return;
+      }
 
-  if (await this.fileAlreadyUploaded(file)) {
-    this.errorMessage = this.$t("manage.fileExist");
-    this.showErrorModal = true;
+      if (await this.fileAlreadyUploaded(file)) {
+        this.errorMessage = this.$t("manage.fileExist");
+        this.showErrorModal = true;
 
-    this.uploads.push({
-      task: {},
-      current_progress: 100,
-      name: file.name,
-      variant: "bg-yellow-400",
-      icon: "fas fa-exclamation",
-      text_class: "text-yellow-400",
-    });
+        this.uploads.push({
+          task: {},
+          current_progress: 100,
+          name: file.name,
+          variant: "bg-yellow-400",
+          icon: "fas fa-exclamation",
+          text_class: "text-yellow-400",
+        });
 
-    return;
-  }
+        return;
+      }
 
       const storageRef = storage.ref();
       const songsRef = storageRef.child(`songs/${file.name}`);
@@ -164,7 +156,7 @@ export default {
         : [...$event.target.files];
 
       for (const file of files) {
-                await this.uploadFile(file);
+        await this.uploadFile(file);
       }
       $event.target.value = null;
     },
@@ -175,13 +167,13 @@ export default {
     },
 
     async fileAlreadyUploaded(file) {
-  const querySnapshot = await songsCollection
-    .where("uid", "==", auth.currentUser.uid)
-    .where("original_name", "==", file.name)
-    .get();
+      const querySnapshot = await songsCollection
+        .where("uid", "==", auth.currentUser.uid)
+        .where("original_name", "==", file.name)
+        .get();
 
-  return !querySnapshot.empty;
-},
+      return !querySnapshot.empty;
+    },
 
   },
   beforeUnmount() {
@@ -190,7 +182,7 @@ export default {
     });
   },
 
-  
+
 
 };
 </script>
@@ -224,5 +216,4 @@ export default {
   left: 0;
   background-color: rgba(0, 0, 0, 0.5);
 }
-
 </style>

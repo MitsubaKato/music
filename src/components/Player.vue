@@ -5,23 +5,12 @@
       <!-- Play/Pause Button -->
       <div class="w-7 h-7 leading-3">
         <button type="button" @click.prevent="toggleAudio">
-          <i
-            class="fa text-gray-500 text-xl"
-            :class="{ 'fa-play': !playing, 'fa-pause': playing }"
-          ></i>
+          <i class="fa text-gray-500 text-xl" :class="{ 'fa-play': !playing, 'fa-pause': playing }"></i>
         </button>
       </div>
       <!-- Volume Slider -->
       <div class="w-24 h-7 leading-3 mt-1 mr-5 flex items-center">
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          v-model="localVolume"
-          @input="updateVolume"
-          class="slider"
-        />
+        <input type="range" min="0" max="1" step="0.01" v-model="localVolume" @input="updateVolume" class="slider" />
       </div>
       <!-- Current Position -->
       <div class="w-14 h-7 leading-3 text-gray-400 text-lg flex items-center pl-5">
@@ -29,32 +18,22 @@
       </div>
       <!-- Scrub -->
       <div class="w-1/2 h-7 leading-3 ml-3 mt-2 player-scrub flex-grow-0">
-        <div
-          class="absolute left-0 right-0 text-lg text-center mx-auto player-song-info"
-          v-if="currentSong.modified_name"
-        >
+        <div class="absolute left-0 right-0 text-lg text-center mx-auto player-song-info"
+          v-if="currentSong.modified_name">
           <span class="song-title">{{ currentSong.modified_name }}</span>
           <span class="song-artist">
             ({{ $t('fieldNames.uploadedBy') }} {{ currentSong.display_name }})
           </span>
         </div>
         <!-- Scrub Container  -->
-        <span
-          class="block w-full h-2 rounded m-1 mt-2 bg-gray-200 relative cursor-pointer"
-          @click.prevent="updateSeek"
-        >
+        <span class="block w-full h-2 rounded m-1 mt-2 bg-gray-200 relative cursor-pointer" @click.prevent="updateSeek">
           <!-- Player Ball -->
-          <span
-            class="absolute top-neg-8 text-gray-800 text-lg"
-            :style="{ left: playerProgress }"
-          >
+          <span class="absolute top-neg-8 text-gray-800 text-lg" :style="{ left: playerProgress }">
             <i class="fas fa-circle"></i>
           </span>
           <!-- Player Progress Bar -->
-          <span
-            class="block h-2 rounded bg-gradient-to-r from-green-500 to-green-400"
-            :style="{ width: playerProgress }"
-          ></span>
+          <span class="block h-2 rounded bg-gradient-to-r from-green-500 to-green-400"
+            :style="{ width: playerProgress }"></span>
         </span>
       </div>
       <!-- Duration -->
