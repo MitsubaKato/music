@@ -64,6 +64,7 @@ export default {
   beforeUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   },
+
   methods: {
 
     showAuthModal() {

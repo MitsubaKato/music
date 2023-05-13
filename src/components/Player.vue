@@ -18,7 +18,7 @@
           min="0"
           max="1"
           step="0.01"
-          v-model="volume"
+          v-model="localVolume"
           @input="updateVolume"
           class="slider"
         />
@@ -74,8 +74,8 @@ export default {
   name: "Player",
   data() {
     return {
-      volume: 0.3,
       showVolumeSlider: false,
+      localVolume: 0,
     };
   },
   computed: {
@@ -85,13 +85,30 @@ export default {
       duration: (state) => state.player.duration,
       playerProgress: (state) => state.player.playerProgress,
       currentSong: (state) => state.player.currentSong,
+      volume: (state) => state.player.volume,
     }),
   },
-  methods: {
-    ...mapActions(["toggleAudio", "updateSeek"]),
-    updateVolume() {
-      this.$store.commit("updateVolume", this.volume);
+
+  watch: {
+    volume(newVolume) {
+      this.localVolume = newVolume; // Обновляем локальную переменную при изменении громкости в хранилище
     },
+  },
+
+  methods: {
+    ...mapActions(["toggleAudio", "updateSeek", "stopAudio"]),
+    updateVolume() {
+      this.$store.commit("updateVolume", this.localVolume); // Обновляем громкость в хранилище при изменении локальной переменной
+    },
+  },
+
+  mounted() {
+    this.localVolume = this.volume; // Устанавливаем начальное значение локальной переменной при монтировании компонента
+  },
+
+  beforeRouteLeave(to, from, next) { // Добавьте этот хук
+    this.stopAudio(); // Остановите аудио при переходе на другую страницу
+    next(); // Не забудьте вызвать next(), чтобы продолжить переход на другую страницу
   },
 };
 </script>

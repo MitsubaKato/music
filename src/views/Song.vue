@@ -129,6 +129,11 @@ export default {
       sort: "1",
     };
   },
+
+  beforeRouteLeave(to, from, next) {
+    this.stopAudio(); // Остановите аудио при переходе на другую страницу
+    next(); // Не забудьте вызвать next(), чтобы продолжить переход на другую страницу
+  },
   computed: {
     ...mapState({
       userLoggedIn: (state) => state.auth.userLoggedIn,
@@ -164,7 +169,7 @@ export default {
     });
   },
   methods: {
-    ...mapActions(["newSong"]),
+    ...mapActions(["newSong", "stopAudio"]),
     async addComment(values, { resetForm }) {
       this.comment_in_submission = true;
       this.comment_show_alert = true;

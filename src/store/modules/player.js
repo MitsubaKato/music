@@ -9,6 +9,7 @@ export default {
     duration: '00:00',
     playerProgress: '0%',
     positionUpdateInterval: null,
+    volume: 1.0,
   },
   getters: {
     playing: (state) => {
@@ -25,6 +26,7 @@ export default {
       state.sound = new Howl({
         src: [payload.url],
         html5: true,
+        volume: state.volume,
       });
     },
     updatePosition(state) {
@@ -33,7 +35,11 @@ export default {
       state.playerProgress = `${(state.sound.seek() / state.sound.duration()) * 100}%`;
     },
     updateVolume(state, payload) {
-      state.sound.volume(payload);
+      state.volume = payload;
+
+      if (state.sound instanceof Howl) {
+        state.sound.volume(payload);
+      }
     },
   },
   actions: {
@@ -86,5 +92,11 @@ export default {
       state.sound.seek(seconds);
       dispatch('progress');
     },
+    
+      stopAudio({ state }) {
+        if (state.sound.playing()) {
+          state.sound.stop(); // Используйте метод stop Howler.js, чтобы остановить воспроизведение звука
+        }
+      },
   },
 };

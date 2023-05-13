@@ -64,7 +64,6 @@
 <script>
 import { likesCollection, auth } from "@/includes/firebase";
 
-
 export default {
   name: "SongItem",
   props: ["song"],
@@ -86,7 +85,6 @@ export default {
     });
   },
   methods: {
-
     checkAuth() {
     if (!auth.currentUser) {
       this.$emit('showAuthModal');
