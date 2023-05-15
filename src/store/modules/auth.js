@@ -15,22 +15,32 @@ export default {
   },
   actions: {
     async register({ commit }, payload) {
+      const userSnapshot = await usersCollection.where('name', '==', payload.name).get();
+      if (!userSnapshot.empty) {
+        throw new Error('Пользователь с таким именем уже существует');
+      }
+    
       const userCred = await auth.createUserWithEmailAndPassword(
         payload.email,
         payload.password
       );
-
+    
       await usersCollection.doc(userCred.user.uid).set({
         name: payload.name,
         email: payload.email,
       });
-
+    
       await userCred.user.updateProfile({
         displayName: payload.name,
       });
-
+    
       commit("toggleAuth");
     },
+
+    async resetPassword(_, email) {
+      await auth.sendPasswordResetEmail(email);
+    },
+    
     async login({ commit }, payload) {
       await auth.signInWithEmailAndPassword(payload.email, payload.password);
   

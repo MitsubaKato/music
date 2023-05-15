@@ -101,8 +101,8 @@ export default {
   },
 
   beforeRouteLeave(to, from, next) {
-    this.stopAudio(); // Остановите аудио при переходе на другую страницу
-    next(); // Не забудьте вызвать next(), чтобы продолжить переход на другую страницу
+    this.stopAudio(); // Остановка аудио при переходе на другую страницу
+    next();
   },
   computed: {
     ...mapState({
@@ -205,7 +205,6 @@ export default {
 
   beforeUnmount() {
     clearTimeout(this.comment_alert_timeout);
-    // ... ваш код
   },
 };
 </script>

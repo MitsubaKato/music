@@ -6,18 +6,6 @@
       </div>
       <div class="col-span-2">
         <div class="bg-white rounded border border-gray-200 relative flex flex-col">
-          <!-- Liked Songs -->
-
-          <div class="p-6">
-            <h2 class="text-xl font-bold mb-4">{{ $t("fieldNames.Liked_Songs") }}</h2>
-            <ul>
-              <li v-for="(song, i) in likedSongs" :key="i" class="mb-2">
-                <router-link :to="{ name: 'song', params: { id: song.docID } }"
-                  class="text-blue-500 hover:text-blue-700">{{ song.modified_name }}</router-link>
-              </li>
-            </ul>
-          </div>
-
           <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
             <span class="card-title">{{ $t("manage.my_songs") }}, {{ NameUser }} </span>
 
