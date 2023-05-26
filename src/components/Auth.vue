@@ -63,9 +63,6 @@ export default {
     };
   },
   computed: {
-    // ...mapState({
-    //   modal: 'authModalShow',
-    // }),
     ...mapState({
       authModalShow: (state) => state.auth.authModalShow,
     }),

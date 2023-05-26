@@ -96,7 +96,8 @@
     "hello": "Hello",
     "likes": "Likes",
     "header": "Profile",
-    "uploads": "Uploads"
+    "uploads": "Uploads",
+    "picture": "Update Profile Picture"
   }
   
 }

@@ -7,7 +7,7 @@
             <img :src="user.photoURL || 'https://via.placeholder.com/150'" alt="User Profile Picture"
               class="w-24 h-24 mx-auto rounded-full mb-4" />
             <input type="file" ref="fileInput" @change="handleFileUpload" style="display: none" />
-            <button @click="triggerFileUpload" class="btn btn-primary">Update Profile Picture</button>
+            <button @click="triggerFileUpload" class="btn btn-primary">{{ $t("profile.picture") }}</button>
             <h2 class="text-2xl font-bold">{{ $t("profile.hello") }}, {{ NameUser }}</h2>
           </div>
           <hr class="my-6" />
