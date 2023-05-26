@@ -94,7 +94,7 @@ export default {
     },
 
     stopAudio({ state }) {
-      if (state.sound.playing()) {
+      if (state.sound instanceof Howl && state.sound.playing()) {
         state.sound.stop(); // Используйте метод stop Howler.js, чтобы остановить воспроизведение звука
       }
     },

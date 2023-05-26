@@ -40,8 +40,9 @@
           </div>
           <vee-form :validation-schema="schema" @submit="addComment" v-if="userLoggedIn">
             <vee-field as="textarea" name="comment"
-              class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded mb-4"
-              :placeholder="$t('placeholder.text')"></vee-field>
+  class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded mb-4"
+  :placeholder="$t('placeholder.text')"
+  @input="resetError"></vee-field>
 
             <ErrorMessage class="text-red-600" name="comment" />
             <button type="submit" class="py-1.5 px-3 rounded text-white bg-green-600 block"
@@ -139,10 +140,16 @@ export default {
     });
   },
   methods: {
+    resetError() {
+  this.comment_show_alert = false;
+},
     ...mapActions(["newSong", "stopAudio"]),
     async addComment(values, { resetForm }) {
       this.comment_in_submission = true;
       this.comment_show_alert = true;
+      this.comment_alert_timeout = setTimeout(() => {
+  this.comment_show_alert = false;
+}, 3000);
       this.comment_alert_variant = "bg-blue-500";
       this.comment_alert_message =
         this.$t("comment.submitted")
