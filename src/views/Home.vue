@@ -2,10 +2,8 @@
   <main>
     <!-- Introduction -->
     <section class="mb-8 py-20 text-white text-center relative">
-      <div
-        class="absolute inset-0 w-full h-full bg-contain introduction-bg"
-        style="background-image: url(assets/img/header.png)"
-      ></div>
+      <div class="absolute inset-0 w-full h-full bg-contain introduction-bg"
+        style="background-image: url(assets/img/header.png)"></div>
       <div class="container mx-auto">
         <div class="text-white main-header-content">
           <!-- Introducting Heading -->
@@ -21,10 +19,7 @@
         </div>
       </div>
 
-      <img
-        class="relative block mx-auto mt-5 -mb-20 w-auto max-w-full"
-        src="assets/img/introduction-music.png"
-      />
+      <img class="relative block mx-auto mt-5 -mb-20 w-auto max-w-full" src="assets/img/introduction-music.png" />
     </section>
 
     <!-- Main Content -->
@@ -32,7 +27,7 @@
       <div class="bg-gray-800 rounded border-gray-200 relative flex flex-col">
         <!-- Playlist -->
         <div id="playlist">
-          <app-song-item v-for="song in songs" :key="song.docID" :song="song" @showAuthModal="showAuthModal"/>
+          <app-song-item v-for="song in songs" :key="song.docID" :song="song" @showAuthModal="showAuthModal" />
         </div>
         <!-- .. end Playlist -->
       </div>
@@ -64,11 +59,12 @@ export default {
   beforeUnmount() {
     window.removeEventListener("scroll", this.handleScroll);
   },
+
   methods: {
 
     showAuthModal() {
-    this.$store.commit('toggleAuthModal');
-  },
+      this.$store.commit('toggleAuthModal');
+    },
     handleScroll() {
       const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
       const bottomOfWindow = Math.round(scrollTop + clientHeight) >= scrollHeight;

@@ -1,35 +1,32 @@
 <template>
-    <div class="container mx-auto px-4">
-      <div class="flex justify-center py-8">
-        <div class="w-full md:w-3/4 lg:w-1/2">
-          <div class="bg-white shadow-md rounded p-8">
-            <div class="text-center">
-              <img
-                :src="user.photoURL || 'https://via.placeholder.com/150'"
-                alt="User Profile Picture"
-                class="w-24 h-24 mx-auto rounded-full mb-4"
-              />
-              <input type="file" ref="fileInput" @change="handleFileUpload" style="display: none" />
-              <button @click="triggerFileUpload" class="btn btn-primary">Update Profile Picture</button>
-              <h2 class="text-2xl font-bold">{{ $t("profile.hello") }}, {{ NameUser }}</h2>
-            </div>
-            <hr class="my-6" />
-            <div>
-              <h3 class="text-xl font-bold mb-4">{{ $t("profile.likes") }}</h3>
-              <ul>
-                <li v-for="(song, i) in likedSongs" :key="i" class="mb-2">
-                  <router-link :to="{ name: 'song', params: { id: song.docID } }" 
+  <div class="container mx-auto px-4">
+    <div class="flex justify-center py-8">
+      <div class="w-full md:w-3/4 lg:w-1/2">
+        <div class="bg-white shadow-md rounded p-8">
+          <div class="text-center">
+            <img :src="user.photoURL || 'https://via.placeholder.com/150'" alt="User Profile Picture"
+              class="w-24 h-24 mx-auto rounded-full mb-4" />
+            <input type="file" ref="fileInput" @change="handleFileUpload" style="display: none" />
+            <button @click="triggerFileUpload" class="btn btn-primary">{{ $t("profile.picture") }}</button>
+            <h2 class="text-2xl font-bold">{{ $t("profile.hello") }}, {{ NameUser }}</h2>
+          </div>
+          <hr class="my-6" />
+          <div>
+            <h3 class="text-xl font-bold mb-4">{{ $t("profile.likes") }}</h3>
+            <ul>
+              <li v-for="(song, i) in likedSongs" :key="i" class="mb-2">
+                <router-link :to="{ name: 'song', params: { id: song.docID } }"
                   class="text-blue-500 hover:text-blue-700">{{ song.modified_name }}</router-link>
-                </li>
-              </ul>
-            </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
-  <script>
+<script>
 import { auth, likesCollection, songsCollection, storage, usersCollection } from "@/includes/firebase";
 
 export default {
@@ -88,73 +85,74 @@ export default {
     },
 
     async uploadProfilePicture() {
-    const userId = auth.currentUser.uid;
-    const storageRef = storage.ref();
+      const userId = auth.currentUser.uid;
+      const storageRef = storage.ref();
 
-    // Создание ссылки на файл в хранилище
-    const fileRef = storageRef.child(`users/${userId}/profile-picture/${this.selectedFile.name}`);
+      // Создание ссылки на файл в хранилище
+      const fileRef = storageRef.child(`users/${userId}/profile-picture/${this.selectedFile.name}`);
 
-    // Загрузка файла
-    await fileRef.put(this.selectedFile);
+      // Загрузка файла
+      await fileRef.put(this.selectedFile);
 
-    // Получение URL файла
-    const photoURL = await fileRef.getDownloadURL();
+      // Получение URL файла
+      const photoURL = await fileRef.getDownloadURL();
 
-    // Обновление URL фотографии в Firestore
-    await usersCollection.doc(userId).update({ photoURL });
+      // Обновление URL фотографии в Firestore
+      await usersCollection.doc(userId).update({ photoURL });
 
-    // Обновление локального состояния
-    this.user.photoURL = photoURL;
-  },
+      // Обновление локального состояния
+      this.user.photoURL = photoURL;
+    },
 
-  async fetchUserProfile() {
-    const userId = auth.currentUser.uid;
-    const userSnapshot = await usersCollection.doc(userId).get();
-    const userData = userSnapshot.data();
+    async fetchUserProfile() {
+      const userId = auth.currentUser.uid;
+      const userSnapshot = await usersCollection.doc(userId).get();
+      const userData = userSnapshot.data();
 
-    this.user = {
-      ...userData,
-      uid: userId,
-    };
-  },
+      this.user = {
+        ...userData,
+        uid: userId,
+      };
+    },
   },
 };
 </script>
   
   
-  <style scoped>
-  .container {
-    max-width: 1024px;
-  }
+<style scoped>
+.container {
+  max-width: 1024px;
+}
 
-  ul li {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 8px 12px;
-    margin-bottom: 8px;
-  }
-  
-  ul li:hover {
-    background-color: #f3f3f3;
-  }
+ul li {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+}
 
-  button {
-    margin-top: 10px;
-    background-color: #4CAF50; /* Зеленый */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+ul li:hover {
+  background-color: #f3f3f3;
+}
 
-  button:hover {
-    background-color: #45a049;
-  }
-  </style>
+button {
+  margin-top: 10px;
+  background-color: #4CAF50;
+  /* Зеленый */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+</style>
   
