@@ -95,9 +95,11 @@
   "profile": {
     "hello": "Welcome back",
     "likes": "Likes",
+    "like": "Likes",
     "header": "Profile",
     "uploads": "Uploads",
-    "picture": "Update Picture"
+    "picture": "Update Picture",
+    "comments": "Comments"
   }
   
 }
