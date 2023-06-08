@@ -1,9 +1,8 @@
 <template>
 <main class="profile-page">
 <section class="relative block h-500-px">
-  <div class="absolute top-0 w-full h-full bg-center bg-cover" style="
-          background-image: url('https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=2710&amp;q=80');
-        ">
+  <div @click="triggerBgUpload" class="absolute top-0 w-full h-full bg-center bg-cover" :style="`background-image: url('${user.backgroundURL || 'https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=2710&amp;q=80'}');`">
+        <input type="file" ref="bgInput" @change="handleBgUpload" style="display: none" />
     <span id="blackOverlay" class="w-full h-full absolute opacity-50 bg-black"></span>
   </div>
   <div class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-70-px" style="transform: translateZ(0px)">
@@ -130,6 +129,35 @@ export default {
         }
       });
     },
+
+    triggerBgUpload() {
+    this.$refs.bgInput.click(); // Trigger the file input click
+  },
+
+  handleBgUpload(event) {
+    this.selectedBgFile = event.target.files[0]; // Get the selected file
+    this.uploadBackgroundPicture(); // Upload the background picture
+  },
+
+  async uploadBackgroundPicture() {
+    const userId = auth.currentUser.uid;
+    const storageRef = storage.ref();
+
+    // Создание ссылки на файл в хранилище
+    const fileRef = storageRef.child(`users/${userId}/background-picture/${this.selectedBgFile.name}`);
+
+    // Загрузка файла
+    await fileRef.put(this.selectedBgFile);
+
+    // Получение URL файла
+    const backgroundURL = await fileRef.getDownloadURL();
+
+    // Обновление URL фотографии в Firestore
+    await usersCollection.doc(userId).update({ backgroundURL });
+
+    // Обновление локального состояния
+    this.user.backgroundURL = backgroundURL;
+  },
 
     triggerFileUpload() {
       this.$refs.fileInput.click(); // Trigger the file input click
