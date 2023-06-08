@@ -2,14 +2,23 @@
   <div class="container mx-auto px-4">
     <div class="flex justify-center py-8">
       <div class="w-full md:w-3/4 lg:w-1/2">
-        <div class="bg-white shadow-md rounded p-8">
-          <div class="text-center">
-            <img :src="user.photoURL || 'https://via.placeholder.com/150'" alt="User Profile Picture"
-              class="w-24 h-24 mx-auto rounded-full mb-4" />
-            <input type="file" ref="fileInput" @change="handleFileUpload" style="display: none" />
-            <button @click="triggerFileUpload" class="btn btn-primary">{{ $t("profile.picture") }}</button>
-            <h2 class="text-2xl font-bold">{{ $t("profile.hello") }}, {{ NameUser }}</h2>
+        <div class="bg-white shadow-md rounded px-8 py-3">
+          <div class="inline-flex"> 
+            
+            <div class="text-center">
+              <img :src="user.photoURL || 'https://via.placeholder.com/150'" alt="User Profile Picture"
+                class="w-24 h-24 mx-auto rounded-full mb-4" />
+              <input type="file" ref="fileInput" @change="handleFileUpload" style="display: none" />
+              <button @click="triggerFileUpload" class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">{{ $t("profile.picture") }}</button>
+            </div>
+            <div class="inline-block ml-4">
+              <p class="text-2xl pb-2">{{ $t("profile.hello") }},</p>
+              <p class="text-2xl font-medium pb-2">{{ NameUser }}</p>
+            </div>
+            
           </div>
+          
+
           <hr class="my-6" />
           <div>
             <h3 class="text-xl font-bold mb-4">{{ $t("profile.likes") }}</h3>
@@ -135,24 +144,6 @@ ul li:hover {
   background-color: #f3f3f3;
 }
 
-button {
-  margin-top: 10px;
-  background-color: #4CAF50;
-  /* Зеленый */
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
 
-button:hover {
-  background-color: #45a049;
-}
 </style>
   

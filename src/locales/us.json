@@ -93,11 +93,11 @@
     "added": "Comment added!"
   }, 
   "profile": {
-    "hello": "Hello",
+    "hello": "Welcome back",
     "likes": "Likes",
     "header": "Profile",
     "uploads": "Uploads",
-    "picture": "Update Profile Picture"
+    "picture": "Update Picture"
   }
   
 }

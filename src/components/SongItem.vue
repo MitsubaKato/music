@@ -3,14 +3,14 @@
     <div class="flex-1">
       <router-link :to="{ name: 'song', params: { id: song.docID } }" class="font-bold block text-white">{{
         song.modified_name }}</router-link>
-      <span class="text-gray-300 text-sm pt-2 block">{{ song.genre }}</span>
+        <div class="pt-2 block">
+          <span v-for="genre in song.genre" :key="genre" class="mr-2 inline-block rounded-full bg-bgGenre px-3 py-1 text-sm font-semibold text-white">{{ genre }}</span>
+        </div>
 
-      <span class="song-owner" @click="checkAuth">
-        <span class="text-gray-500 text-sm">{{ $t('fieldNames.uploadedBy') }} <span class="cursor-pointer text">{{
-          song.display_name }}</span>
+        <span class="song-owner block pt-2" @click="checkAuth">
+          <span class="inline-block rounded-l-lg bg-bgUploadBy px-3 py-1 text-sm font-semibold text-white">{{ $t('fieldNames.uploadedBy') }}</span> 
+          <span class="inline-block bg-bgName rounded-r-lg px-3 py-1 text-sm font-semibold text-white cursor-pointer">{{ song.display_name }}</span>
         </span>
-      </span>
-
     </div>
 
     <span class="ml-3 text-gray-600">
