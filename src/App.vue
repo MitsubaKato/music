@@ -3,7 +3,7 @@
 
   <router-view v-slot="{ Component }">
     <transition name="fade" mode="out-in">
-      <component :is="Component"></component>
+        <component :is="Component"></component>
     </transition>
   </router-view>
 
@@ -13,7 +13,6 @@
 </template>
 
 <script>
-// import AppPlayer from "@/components/Player.vue";
 import AppHeader from "./components/Header.vue";
 import AuthModal from "./components/Auth.vue";
 

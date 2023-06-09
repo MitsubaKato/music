@@ -70,7 +70,9 @@
     "Liked_Songs": "Liked Songs",
     "submit": "Submit",
     "latest": "Latest",
-    "older": "Oldest"
+    "older": "Oldest",
+    "comment": "Comment",
+    "addComment": "Add new comment"
   },
   "alert": {
     "update": "Please wait! Updating song info.",
@@ -93,11 +95,13 @@
     "added": "Comment added!"
   }, 
   "profile": {
-    "hello": "Hello",
+    "hello": "Welcome back",
     "likes": "Likes",
+    "like": "Likes",
     "header": "Profile",
     "uploads": "Uploads",
-    "picture": "Update Profile Picture"
+    "picture": "Update Picture",
+    "comments": "Comments"
   }
   
 }

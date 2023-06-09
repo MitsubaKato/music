@@ -13,13 +13,12 @@
         <div class="z-50 text-left ml-8">
           <!-- Song Info -->
           <div class="text-3xl font-bold">{{ song.modified_name }}</div>
-          <div>{{ song.genre }}</div>
+          <div class="pt-2 block">
+            <span v-for="genre in song.genre" :key="genre" class="mr-2 inline-block rounded-full bg-bgGenre px-3 py-1 text-sm font-semibold text-white">{{ genre }}</span>
+          </div>
         </div>
       </div>
     </section>
-
-    <app-player />
-
     <!-- Form -->
     <section class="container mx-auto mt-6" id="comments">
       <div class="bg-white rounded border border-gray-200 relative flex flex-col">
@@ -34,44 +33,63 @@
           </span>
           <i class="fa fa-comments float-right text-green-400 text-2xl"></i>
         </div>
-        <div class="p-6">
+        <div class="">
           <div class="text-white text-center font-bold p-4 mb-4" v-if="comment_show_alert" :class="comment_alert_variant">
             {{ comment_alert_message }}
           </div>
-          <vee-form :validation-schema="schema" @submit="addComment" v-if="userLoggedIn">
-            <vee-field as="textarea" name="comment"
-  class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded mb-4"
-  :placeholder="$t('placeholder.text')"
-  @input="resetError"></vee-field>
-
-            <ErrorMessage class="text-red-600" name="comment" />
-            <button type="submit" class="py-1.5 px-3 rounded text-white bg-green-600 block"
-              :disabled="comment_in_submission">
-              {{ $t("fieldNames.submit") }}
-            </button>
-          </vee-form>
+            <vee-form :validation-schema="schema" @submit="addComment" v-if="userLoggedIn" validate-on="submit">
+              <div class="flex items-center shadow-lg mx-8 mb-4"> 
+                <div class="w-full bg-white rounded-lg px-4 pt-2">
+                  <div class="flex flex-wrap -mx-3 mb-6">
+                    <h2 class="px-4 pt-3 pb-2 text-gray-800 text-lg">{{ $t("fieldNames.addComment") }}</h2>
+                    <div class="w-full md:w-full px-3 mb-2 mt-2">
+                      <vee-field as="textarea" name="comment"
+                      class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-700 focus:outline-none focus:bg-white"
+                      :placeholder="$t('placeholder.text')"
+                      @input="resetError">
+                    </vee-field>
+                    </div>
+                    <div class="ml-3 mt-1">
+                      <ErrorMessage v-if="formHasBeenSubmitted" class="text-red-600 block mb-3" name="comment" />
+                        <button type="submit" class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100"
+                          :disabled="comment_in_submission">
+                          {{ $t("fieldNames.submit") }}
+                        </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </vee-form>
+            
           <!-- Comment Sorting -->
           <select v-model="sort"
-            class="block mt-4 py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded">
+            class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100 my-8 ml-8">
             <option value="1">{{ $t("fieldNames.latest") }}</option>
             <option value="2">{{ $t("fieldNames.older") }}</option>
           </select>
         </div>
       </div>
     </section>
-    <!-- Comments -->
+    <!-- Comments -->    
     <ul class="container mx-auto">
-      <li class="p-6 bg-gray-50 border border-gray-200" v-for="comment in sortedComments" :key="comment.docID">
-        <!-- Comment Author -->
-        <div class="mb-5">
-          <div class="font-bold">{{ comment.name }}</div>
-          <time>{{ comment.datePosted }}</time>
-        </div>
-
-        <p>{{ comment.content }}</p>
+      <li class="p-6 bg-gray-50 " v-for="comment in sortedComments" :key="comment.docID">
+        <div class="relative grid grid-cols-1 gap-4 p-4 mb-8 border rounded-lg bg-white shadow-lg">
+          <div class="relative flex gap-4">
+            <img :src="comment.avatar" class="relative rounded-lg -top-8 -mb-4 bg-white border h-20 w-20" alt="Comment avatar">
+              <div class="flex flex-col w-full">
+                  <div class="flex flex-row justify-between">
+                      <p class="relative text-xl whitespace-nowrap truncate overflow-hidden">{{ comment.name }}</p>
+                  </div>
+                  <p class="text-gray-400 text-sm">{{ comment.datePosted }}</p>
+              </div>
+          </div>
+          <p class="-mt-4 text-gray-500">{{ comment.content }}</p>
+      </div>
       </li>
     </ul>
   </main>
+  <app-player />
+
 </template>
 
 <script>
@@ -89,9 +107,13 @@ export default {
     return {
       song: {},
       schema: {
-        comment: "required|min:3",
+        comment: {
+        required: true,
+        min: { is: 3, message: 'Комментарий должен содержать минимум 3 символа' }
+      },
         comment_alert_timeout: null,
       },
+      formHasBeenSubmitted: false,
       comment_in_submission: false,
       comment_show_alert: false,
       comment_alert_variant: "bg-blue-500",
@@ -147,6 +169,7 @@ export default {
     async addComment(values, { resetForm }) {
       this.comment_in_submission = true;
       this.comment_show_alert = true;
+      this.formHasBeenSubmitted = true;
       this.comment_alert_timeout = setTimeout(() => {
   this.comment_show_alert = false;
 }, 3000);
@@ -160,6 +183,7 @@ export default {
         sid: this.$route.params.id,
         name: auth.currentUser.displayName,
         uid: auth.currentUser.uid,
+        avatar: auth.currentUser.photoURL,
       };
 
       await commentsCollection.add(comment);
@@ -176,6 +200,7 @@ export default {
       this.comment_alert_message = this.$t("comment.added");
 
       resetForm();
+      this.formHasBeenSubmitted = false;
 
       this.comment_alert_timeout = setTimeout(() => {
         this.comment_show_alert = false;

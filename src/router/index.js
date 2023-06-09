@@ -8,6 +8,7 @@ const NotFound = () => import('@/views/NotFound.vue');
 const Profile = () => import('@/views/Profile.vue'); 
 const UserProfile = () => import('@/views/UserProfile.vue'); 
 
+
 const routes = [
   {
     name: 'home',

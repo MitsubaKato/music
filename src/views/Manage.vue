@@ -15,7 +15,7 @@
           <div class="p-6">
             <!-- Composition Items -->
             <composition-item v-for="(song, i) in songs" :key="song.docID" :song="song" :updateSong="updateSong"
-              :index="i" :removeSong="removeSong" :updateUnsavedFlag="updateUnsavedFlag" />
+              :index="i" :removeSong="removeSong" :updateUnsavedFlag="updateUnsavedFlag" :genres="genres" />
           </div>
 
         </div>
@@ -25,7 +25,6 @@
 </template>
 
 <script>
-// import store from '@/store';
 import AppUpload from "@/components/Upload.vue";
 import CompositionItem from "@/components/CompositionItem.vue";
 import { likesCollection, songsCollection, auth } from "@/includes/firebase";

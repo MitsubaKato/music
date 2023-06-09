@@ -1,29 +1,84 @@
 <template>
-  <div class="container mx-auto px-4">
-    <div class="flex justify-center py-8">
-      <div class="w-full md:w-3/4 lg:w-1/2">
-        <div class="bg-white shadow-md rounded p-8">
-          <div class="text-center">
-            <img :src="user.photoURL || 'https://via.placeholder.com/150'" alt="User Profile Picture"
-              class="w-24 h-24 mx-auto rounded-full mb-4" />
-            <h2 class="text-2xl font-bold">{{ user.name }}</h2>
+  <main class="profile-page">
+  <section class="relative block h-500-px">
+    <div @click="triggerBgUpload" class="absolute top-0 w-full h-full bg-center bg-cover" :style="`background-image: url('${user.backgroundURL || 'https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=2710&amp;q=80'}');`">
+  <span id="blackOverlay" class="w-full h-full absolute opacity-50 bg-black"></span>
+</div>
+    <div class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-70-px" style="transform: translateZ(0px)">
+      <svg class="absolute bottom-0 overflow-hidden" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" version="1.1" viewBox="0 0 2560 100" x="0" y="0">
+        <polygon class="text-blueGray-200 fill-current" points="2560 0 2560 100 0 100"></polygon>
+      </svg>
+    </div>
+  </section>
+  <section class="relative py-16 bg-blueGray-200">
+    <div class="container mx-auto px-4">
+      <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
+        <div class="px-6">
+          <div class="flex flex-wrap justify-center">
+            <div class="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
+                <input type="file" ref="fileInput" @change="handleFileUpload" style="display: none" />              
+                <img alt="..." :src="user.photoURL || 'https://via.placeholder.com/150'" @click="triggerFileUpload" class="w-40 h-40 rounded-full border-4 
+                border-green-400 object-cover -m-20">
+            </div>
+            <div class="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
+            </div>
+            <div class="w-full lg:w-4/12 px-4 lg:order-1">
+              <div class="flex justify-center py-4 lg:pt-4 pt-8">
+                <div class="mr-4 p-3 text-center">
+                  <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">22</span><span class="text-sm text-blueGray-400">{{$t("profile.like")}}</span>
+                </div>
+                <div class="mr-4 p-3 text-center">
+                  <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">10</span><span class="text-sm text-blueGray-400">{{$t("profile.uploads")}}</span>
+                </div>
+                <div class="lg:mr-4 p-3 text-center">
+                  <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">89</span><span class="text-sm text-blueGray-400">{{$t("profile.comments")}}</span>
+                </div>
+              </div>
+            </div>
           </div>
-          <hr class="my-6" />
-          <div>
-            <h3 class="text-xl font-bold mb-4">{{ $t("profile.uploads") }}</h3>
-            <ul>
-              <li v-for="(song, i) in songs" :key="i" class="mb-2">
-                <router-link :to="{ name: 'song', params: { id: song.docID } }"
-                  class="text-blue-500 hover:text-blue-700">{{ song.modified_name }}</router-link>
-              </li>
-            </ul>
+          <div class="text-center mt-12">
+            <h3 class="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
+              {{ user.name }}
+            </h3>
           </div>
+          <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
+            <div class="flex flex-wrap justify-center">
+              <div class="w-full lg:w-9/12 px-4">
+                <p class="mb-4 text-lg leading-relaxed text-blueGray-700">
+                  An artist of considerable range, Jenna the name taken by
+                  Melbourne-raised, Brooklyn-based Nick Murphy writes,
+                  performs and records all of his own music, giving it a
+                  warm, intimate feel with a solid groove structure. An
+                  artist of considerable range.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="text-center"> 
+            <h3 class="text-xl font-semibold mb-4">{{ $t("profile.uploads") }} <i class="fa fa-upload pl-2 text-blue-500"></i></h3> 
+          </div>
+          
+          <ul class="flex flex-col p-4">
+            <li v-for="(song, i) in songs" :key="i" class="flex flex-row mb-2">
+              <router-link :to="{ name: 'song', params: { id: song.docID } }" class="block w-full">
+                <div class="select-none cursor-pointer bg-green-300 rounded-md flex flex-1 items-center p-4 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
+                  <div class="flex flex-col rounded-md w-10 h-10 bg-gray-300 justify-center items-center mr-4">?</div>
+                  <div class="flex-1 pl-1 mr-16">
+                    <div>{{ song.modified_name }}</div>
+                    <div class="pt-2 block">
+                      <span v-for="genre in song.genre" :key="genre" class="mr-2 inline-block rounded-full bg-bgGenre px-3 py-1 text-sm font-semibold text-white">{{ genre }}</span>
+                    </div>
+                  </div>
+                </div>
+              </router-link>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
-  </div>
-</template>
-
+  </section>
+  </main>
+  </template>
 <script>
 import { auth, usersCollection, songsCollection } from "@/includes/firebase";
 
@@ -68,18 +123,17 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css');
+@import url('https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css');
 .container {
   max-width: 1024px;
 }
 
-ul li {
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  padding: 8px 12px;
-  margin-bottom: 8px;
+ul li:hover {
+  background-color: transparent; /* Это уберет фон при наведении */
 }
 
-ul li:hover {
-  background-color: #f3f3f3;
+ul li:hover a {
+  color: inherit; /* Это уберет изменение цвета текста при наведении */
 }
 </style>
