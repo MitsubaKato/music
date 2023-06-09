@@ -70,7 +70,9 @@
     "Liked_Songs": "Liked Songs",
     "submit": "Submit",
     "latest": "Latest",
-    "older": "Oldest"
+    "older": "Oldest",
+    "comment": "Comment",
+    "addComment": "Add new comment"
   },
   "alert": {
     "update": "Please wait! Updating song info.",

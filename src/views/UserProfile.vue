@@ -65,9 +65,10 @@
                   <div class="flex flex-col rounded-md w-10 h-10 bg-gray-300 justify-center items-center mr-4">?</div>
                   <div class="flex-1 pl-1 mr-16">
                     <div>{{ song.modified_name }}</div>
-                    <div class="text-gray-600 text-sm">200ml</div>
+                    <div class="pt-2 block">
+                      <span v-for="genre in song.genre" :key="genre" class="mr-2 inline-block rounded-full bg-bgGenre px-3 py-1 text-sm font-semibold text-white">{{ genre }}</span>
+                    </div>
                   </div>
-                  <div class="text-gray-600 text-xs">6:00 AM</div>
                 </div>
               </router-link>
             </li>
