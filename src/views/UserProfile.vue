@@ -25,14 +25,17 @@
             <div class="w-full lg:w-4/12 px-4 lg:order-1">
               <div class="flex justify-center py-4 lg:pt-4 pt-8">
                 <div class="mr-4 p-3 text-center">
-                  <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">22</span><span class="text-sm text-blueGray-400">{{$t("profile.like")}}</span>
-                </div>
-                <div class="mr-4 p-3 text-center">
-                  <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">10</span><span class="text-sm text-blueGray-400">{{$t("profile.uploads")}}</span>
-                </div>
-                <div class="lg:mr-4 p-3 text-center">
-                  <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">89</span><span class="text-sm text-blueGray-400">{{$t("profile.comments")}}</span>
-                </div>
+                  <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{{ userLikes }}</span>
+                  <span class="text-sm text-blueGray-400">{{$t("profile.like")}}</span>
+              </div>
+              <div class="mr-4 p-3 text-center">
+                  <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{{ userUploads }}</span>
+                  <span class="text-sm text-blueGray-400">{{$t("profile.uploads")}}</span>
+              </div>
+              <div class="lg:mr-4 p-3 text-center">
+                  <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">{{ userComments }}</span>
+                  <span class="text-sm text-blueGray-400">{{$t("profile.comments")}}</span>
+              </div>
               </div>
             </div>
           </div>
@@ -80,14 +83,17 @@
   </main>
   </template>
 <script>
-import { auth, usersCollection, songsCollection } from "@/includes/firebase";
+import { auth, likesCollection, songsCollection, storage, usersCollection, commentsCollection } from "@/includes/firebase";
 
 export default {
   data() {
     return {
       user: {},
       songs: [],
-      unsubscribeAuth: null
+      unsubscribeAuth: null,
+      userLikes: 0,
+      serComments: 0,
+      userUploads: 0,
     };
   },
   props: {
@@ -96,10 +102,28 @@ export default {
       required: true
     }
   },
+  methods: {
+    async fetchUserStats() {
+    const userId = this.id;
+
+    // Получить количество лайков
+    const likesSnapshot = await likesCollection.where("userId", "==", userId).get();
+    this.userLikes = likesSnapshot.docs.length;
+
+    // Получить количество комментариев
+    const commentsSnapshot = await commentsCollection.where("uid", "==", userId).get();
+    this.userComments = commentsSnapshot.docs.length;
+
+    // Получить количество загруженных треков
+    const songsSnapshot = await songsCollection.where("uid", "==", userId).get();
+    this.userUploads = songsSnapshot.docs.length;
+},
+  },
   created() {
     this.unsubscribeAuth = auth.onAuthStateChanged(async (user) => {
       if (user) {
         // User is logged in
+        this.fetchUserStats();
         const userSnapshot = await usersCollection.doc(this.id).get();
         this.user = userSnapshot.data();
         const songsSnapshot = await songsCollection.where('uid', '==', this.id).get();
