@@ -1,4 +1,6 @@
 <template>
+  <div>
+
   <main>
     <!-- Music Header -->
     <section class="w-full mb-8 py-14 text-center text-white relative">
@@ -60,7 +62,6 @@
                 </div>
               </div>
             </vee-form>
-            
           <!-- Comment Sorting -->
           <select v-model="sort"
             class="bg-white text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100 my-8 ml-8">
@@ -89,6 +90,7 @@
     </ul>
   </main>
   <app-player />
+</div>
 
 </template>
 
@@ -107,12 +109,9 @@ export default {
     return {
       song: {},
       schema: {
-        comment: {
-        required: true,
-        min: { is: 3, message: 'Комментарий должен содержать минимум 3 символа' }
+        comment: "required|min:3"
       },
         comment_alert_timeout: null,
-      },
       formHasBeenSubmitted: false,
       comment_in_submission: false,
       comment_show_alert: false,
@@ -170,6 +169,7 @@ export default {
       this.comment_in_submission = true;
       this.comment_show_alert = true;
       this.formHasBeenSubmitted = true;
+      console.log('addComment function is called');
       this.comment_alert_timeout = setTimeout(() => {
   this.comment_show_alert = false;
 }, 3000);
