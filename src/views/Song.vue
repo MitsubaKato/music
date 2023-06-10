@@ -92,7 +92,7 @@
       </li>
     </ul>
   </main>
-  <app-player />
+  <app-player :songe="song" />
 </div>
 
 </template>

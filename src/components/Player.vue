@@ -29,16 +29,17 @@
     <div class="w-16 h-7 leading-3 flex items-center mr-5">
         <input type="range" min="0" max="1" step="0.01" v-model="localVolume" @input="updateVolume" class="slider w-full" />
     </div>
+
     <!-- Cover Art -->
     <div class="w-14 h-14 mr-3">
-        <img :src="currentSong.cover" alt="Cover art" class="w-full h-full object-cover rounded">
+        <img :src="songe.cover" alt="Cover art" class="w-full h-full object-cover rounded">
     </div>
     <!-- Song Info -->
     <div class="text-lg">
-        <span class="song-title">{{ currentSong.modified_name }}</span>
+        <span class="song-title">{{ songe.modified_name }}</span>
         <br/>
         <span class="song-artist">
-            ({{ $t('fieldNames.uploadedBy') }} {{ currentSong.display_name }})
+            ({{ $t('fieldNames.uploadedBy') }} {{ songe.display_name }})
         </span>
     </div>
 </div>
@@ -52,6 +53,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "Player",
+  props: ["songe"],
   data() {
     return {
       showVolumeSlider: false,
@@ -66,6 +68,14 @@ export default {
       playerProgress: (state) => state.player.playerProgress,
       currentSong: (state) => state.player.currentSong,
       volume: (state) => state.player.volume,
+      song: {
+      get() {
+        return this.currentSong || this.$props.songe;
+      },
+      set(value) {
+        this.currentSong = value;
+      },
+    },
     }),
   },
 
@@ -76,19 +86,21 @@ export default {
   },
 
   methods: {
-    ...mapActions(["toggleAudio", "updateSeek", "stopAudio"]),
-    updateVolume() {
-      this.$store.commit("updateVolume", this.localVolume); // Обновляем громкость в хранилище при изменении локальной переменной
-    },
+    ...mapActions(["toggleAudio", "updateSeek", "stopAudio", "resetSong", "resetProgress"]),
+  updateVolume() {
+    this.$store.commit("updateVolume", this.localVolume); // Обновляем громкость в хранилище при изменении локальной переменной
+  },
   },
 
   mounted() {
     this.localVolume = this.volume; // Устанавливаем начальное значение локальной переменной при монтировании компонента
   },
 
-  beforeRouteLeave(to, from, next) { // Добавьте этот хук
-    this.stopAudio(); // Остановите аудио при переходе на другую страницу
-    next(); // Не забудьте вызвать next(), чтобы продолжить переход на другую страницу
-  },
+  beforeRouteLeave(to, from, next) { 
+  this.stopAudio(); // Останавливаем аудио при переходе на другую страницу
+  this.resetSong(); // Сбрасываем текущую песню
+  this.resetProgress(); // Сбрасываем прогресс
+  next(); // Продолжаем переход на другую страницу
+},
 };
 </script>
