@@ -30,11 +30,13 @@
     "vue-i18n": "^9.0.0-rc.2",
     "vue-multiselect": "^3.0.0-beta.2",
     "vue-router": "^4.0.0-0",
-    "vuex": "^4.0.0-0"
+    "vuex": "^4.0.0-0",
+    "wavesurfer.js": "^6.6.4"
   },
   "devDependencies": {
     "@intlify/vue-i18n-loader": "^2.0.0-beta.4",
     "@types/crypto-js": "^4.1.1",
+    "@types/wavesurfer.js": "^6.0.6",
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-e2e-cypress": "~4.5.0",
     "@vue/cli-plugin-pwa": "^4.5.11",

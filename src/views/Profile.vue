@@ -65,16 +65,20 @@
         <ul class="flex flex-col p-4">
           <li v-for="(song, i) in likedSongs" :key="i" class="flex flex-row mb-2">
             <router-link :to="{ name: 'song', params: { id: song.docID } }" class="block w-full">
-              <div class="select-none cursor-pointer bg-green-300 rounded-md flex flex-1 items-center p-4 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
-                <div class="flex flex-col rounded-md w-10 h-10 bg-gray-300 justify-center items-center mr-4">?</div>
+              
+              <div class="select-none cursor-pointer bg-gradient-to-l from-teal-200 via-sky-400 to-emerald-400  rounded-md flex flex-1 items-center p-4 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
+                
+                <img :src="song.cover || 'https://via.placeholder.com/150'" class="rounded-md w-10 h-full justify-center items-center mr-4"/>
+
                 <div class="flex-1 pl-1 mr-16">
                   <div>{{ song.modified_name }}</div>
                   <div class="pt-2 block">
                     <span v-for="genre in song.genre" :key="genre" class="mr-2 inline-block rounded-full bg-bgGenre px-3 py-1 text-sm font-semibold text-white">{{ genre }}</span>
                   </div>
                 </div>
-                <span class="inline-block bg-bgName rounded-full px-3 py-1 text-sm font-semibold text-white cursor-pointer">{{ song.display_name }}</span>
+                <span class="inline-block bg-bgName  rounded-full px-3 py-1 text-sm font-semibold text-white cursor-pointer">{{ song.display_name }}</span>
               </div>
+
             </router-link>
           </li>
         </ul>

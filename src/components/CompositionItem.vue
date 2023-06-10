@@ -137,7 +137,7 @@ export default {
   },
   methods: {
     onSelect(option) {
-      if (this.value.length > 5) {  // установить лимит на 5 тэгов
+      if (this.value.length > 4) {  // установить лимит на 4 тэгов
         this.isTagLimitExceeded = true;
         this.value = this.value.filter(tag => tag.name !== option.name);
       } else {

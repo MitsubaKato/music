@@ -1772,6 +1772,11 @@
   resolved "https://registry.npmjs.org/@types/crypto-js/-/crypto-js-4.1.1.tgz"
   integrity sha512-BG7fQKZ689HIoc5h+6D2Dgq1fABRa0RbBWKBd9SP/MVRVXROflpm5fhwyATX5duFmbStzyzyycPB8qUYKDH3NA==
 
+"@types/debounce@*":
+  version "1.2.1"
+  resolved "https://registry.npmjs.org/@types/debounce/-/debounce-1.2.1.tgz"
+  integrity sha512-epMsEE85fi4lfmJUH/89/iV/LI+F5CvNIvmgs5g5jYFPfhO2S/ae8WSsLOKWdwtoaZw9Q2IhJ4tQ5tFCcS/4HA==
+
 "@types/express-serve-static-core@*", "@types/express-serve-static-core@^4.17.18":
   version "4.17.28"
   resolved "https://registry.npmjs.org/@types/express-serve-static-core/-/express-serve-static-core-4.17.28.tgz"
@@ -1932,6 +1937,13 @@
   integrity sha512-O3MmRAk6ZuAKa9CHgg0Pr0+lUOqoMLpc9AS4R8ano2auvsg7IE8syF3Xh/NPr26TWklxYcqoEEFdzLLs1fV9PQ==
   dependencies:
     source-map "^0.6.1"
+
+"@types/wavesurfer.js@^6.0.6":
+  version "6.0.6"
+  resolved "https://registry.npmjs.org/@types/wavesurfer.js/-/wavesurfer.js-6.0.6.tgz"
+  integrity sha512-fD54o0RXZXxkOb+69Rt6rGViaHpIc1Mmde2aOX9qPhlQhrCPepybGnsekiG407+7scPlaK+hmuPez5AnnmlzGg==
+  dependencies:
+    "@types/debounce" "*"
 
 "@types/web-bluetooth@^0.0.15":
   version "0.0.15"
@@ -12192,6 +12204,11 @@ watchpack@^1.7.4:
   optionalDependencies:
     chokidar "^3.4.1"
     watchpack-chokidar2 "^2.0.1"
+
+wavesurfer.js@^6.6.4:
+  version "6.6.4"
+  resolved "https://registry.npmjs.org/wavesurfer.js/-/wavesurfer.js-6.6.4.tgz"
+  integrity sha512-nBbc0pD/3FdClxKUKL1UW2V9AJPL+JOjC8T6/YF9/FCAn4uo+H6Y8VBkXo9UJXIHoBewoc7iXj3tPeL0UCJhjA==
 
 wbuf@^1.1.0, wbuf@^1.7.3:
   version "1.7.3"

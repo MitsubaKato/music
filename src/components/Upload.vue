@@ -70,7 +70,6 @@ export default {
   },
   props: ["addSong"],
   methods: {
-
     removeUpload(upload) {
       if (upload.task && upload.task.cancel) {
         upload.task.cancel();

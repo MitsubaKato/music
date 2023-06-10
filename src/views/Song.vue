@@ -23,6 +23,7 @@
         </div>
       </div>
     </section>
+    
     <!-- Form -->
     <section class="container mx-auto mt-6" id="comments">
       <div class="bg-white rounded border border-gray-200 relative flex flex-col">
@@ -101,7 +102,6 @@ import { songsCollection, auth, commentsCollection } from "@/includes/firebase";
 import { mapState, mapActions, mapGetters } from "vuex";
 import AppPlayer from "../components/Player.vue";
 
-
 export default {
   name: "Song",
   components: {
@@ -110,6 +110,7 @@ export default {
   data() {
     return {
       song: {},
+      songPlaying: false,
       schema: {
         comment: "required|min:3"
       },
