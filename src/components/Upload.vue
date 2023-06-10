@@ -25,7 +25,7 @@
         @drop.prevent.stop="upload($event)">
         <h5>{{ $t("files.drop") }}</h5>
       </div>
-      <label class="custom-file-upload">
+      <label class="bg-white cursor-pointer text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100 mt-4 inline-block">
         {{ $t('labels.upload') }}
         <input type="file" accept="audio/mpeg" multiple @change="upload($event)" style="display:none" />
       </label>

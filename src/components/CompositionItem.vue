@@ -34,35 +34,36 @@
             :close-on-select="true"
             :taggable="true"
             @tag="addTag"
-            placeholder="Pick some"
+            @select="onSelect"
+            :placeholder="$t('edit.pick')"
             label="name"
             track-by="name"
             @input="updateUnsavedFlag(true)"
-          />
-         
+        />
           <ErrorMessage class="text-red-600" name="genre" />
         </div>
 
         <!-- Cover -->
         <div class="mb-5">
-          <label class="block mb-1">{{ $t("edit.cover") }}</label>
+          <label class="block mb-3">{{ $t("edit.cover") }}</label>
           <label class="bg-white cursor-pointer text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-100">
                           {{ $t("edit.coverSet") }}
           <input style="display:none" type="file" accept="image/*" @change="onCoverChange"/>
           </label>
           
             <img v-if="coverPreview" :src="coverPreview" class="mt-3 w-32 object-cover" />
-
-
         </div>
         <!-- End Cover -->
-        <button type="submit" @click="saveTags" class="py-1.5 px-3 rounded text-white bg-green-600" :disabled="in_submission">
-          {{ $t("edit.submit") }}
-        </button>
-        <button type="button" class="py-1.5 px-3 ml-5 rounded text-white bg-gray-600" :disabled="in_submission"
-          @click.prevent="showForm = false">
-          {{ $t("edit.back") }}
-        </button>
+        <div class="justify-end flex">
+          <button type="submit" @click="saveTags" class="cursor-pointer text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-green-100" :disabled="in_submission">
+            {{ $t("edit.submit") }}
+          </button>
+          <button type="button" class="cursor-pointer text-gray-700 font-medium py-1 px-4 border border-gray-400 rounded-lg tracking-wide mr-1 hover:bg-gray-200 ml-4" :disabled="in_submission"
+            @click.prevent="showForm = false">
+            {{ $t("edit.back") }}
+          </button>
+        </div>
+        
       </vee-form>
     </div>
   </div>
@@ -105,6 +106,7 @@ export default {
   data() {
     return {
       showForm: false,
+      isTagLimitExceeded: false,
       value: [],
       tags: [],
       coverUrl: '',
@@ -134,6 +136,14 @@ export default {
   }
   },
   methods: {
+    onSelect(option) {
+      if (this.value.length > 5) {  // установить лимит на 5 тэгов
+        this.isTagLimitExceeded = true;
+        this.value = this.value.filter(tag => tag.name !== option.name);
+      } else {
+        this.isTagLimitExceeded = false;
+      }
+    },
     onCoverChange(e) {
         this.coverFile = e.target.files[0];
         

@@ -47,7 +47,8 @@
     "submit": "Submit",
     "back": "Back",
     "cover": "Cover",
-    "coverSet": "Set cover"
+    "coverSet": "Set cover",
+    "pick": "pick one"
   },
   "placeholder": {
     "text": "Enter Comment"
