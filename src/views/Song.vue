@@ -13,6 +13,8 @@
           <i class="fa text-gray-500 text-xl" :class="{ 'fa-play': !playing, 'fa-pause': playing }"></i>
         </button>
         <div class="z-50 text-left ml-8">
+          <!-- Song Cover -->
+      <img :src="song.cover" alt="Song Cover" class="h-24 w-24 object-cover rounded-full mr-4">
           <!-- Song Info -->
           <div class="text-3xl font-bold">{{ song.modified_name }}</div>
           <div class="pt-2 block">

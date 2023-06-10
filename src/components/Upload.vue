@@ -187,8 +187,6 @@ export default {
 };
 </script>
 
-
-
 <style>
 .custom-file-upload {
   display: inline-block;

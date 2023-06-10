@@ -92,7 +92,7 @@ export default {
       songs: [],
       unsubscribeAuth: null,
       userLikes: 0,
-      serComments: 0,
+      userComments: 0,
       userUploads: 0,
     };
   },
