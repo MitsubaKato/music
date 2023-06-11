@@ -1,7 +1,7 @@
 <template>
 <main class="profile-page">
 <section class="relative block h-500-px">
-  <div @click="triggerBgUpload" class="absolute top-0 w-full h-full bg-center bg-cover" :style="`background-image: url('${user.backgroundURL || 'https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=2710&amp;q=80'}');`">
+  <div @click="triggerBgUpload" class="absolute top-0 w-full h-full bg-center bg-cover" :style="`background-image: url('${user.backgroundURL || '../assets/img/user-header.png'}');`">
         <input type="file" ref="bgInput" @change="handleBgUpload" style="display: none" />
     <span id="blackOverlay" class="w-full h-full absolute opacity-50 bg-black"></span>
   </div>
@@ -106,6 +106,11 @@ export default {
       userUploads: 0,
     };
   },
+  beforeUnmount() {
+  if (this.unsubscribeProfileListener) {
+    this.unsubscribeProfileListener(); // Отмена слушателя изменений аватара пользователя
+  }
+},
   created() {
     this.unsubscribeAuth = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -218,13 +223,23 @@ export default {
 
     async fetchUserProfile() {
       const userId = auth.currentUser.uid;
-      const userSnapshot = await usersCollection.doc(userId).get();
-      const userData = userSnapshot.data();
 
-      this.user = {
-        ...userData,
-        uid: userId,
-      };
+  // Получение информации о пользователе
+  const userSnapshot = await usersCollection.doc(userId).get();
+  const userData = userSnapshot.data();
+
+  // Обновление локального состояния аватара пользователя
+  this.user = {
+    ...userData,
+    uid: userId,
+  };
+  // Слушатель изменений аватара пользователя в Firestore
+  this.unsubscribeProfileListener = usersCollection.doc(userId).onSnapshot((snapshot) => {
+    const updatedData = snapshot.data();
+
+    // Обновление локального состояния аватара пользователя при изменениях
+    this.user.photoURL = updatedData.photoURL;
+  });
     },
   },
 };

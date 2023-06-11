@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import { songsCollection, auth, commentsCollection } from "@/includes/firebase";
+import { songsCollection, auth, commentsCollection, usersCollection } from "@/includes/firebase";
 import { mapState, mapActions, mapGetters } from "vuex";
 import AppPlayer from "../components/Player.vue";
 
@@ -114,7 +114,7 @@ export default {
       schema: {
         comment: "required|min:3"
       },
-        comment_alert_timeout: null,
+      comment_alert_timeout: null,
       formHasBeenSubmitted: false,
       comment_in_submission: false,
       comment_show_alert: false,
@@ -186,7 +186,7 @@ export default {
         sid: this.$route.params.id,
         name: auth.currentUser.displayName,
         uid: auth.currentUser.uid,
-        avatar: auth.currentUser.photoURL,
+        avatar: auth.currentUser.photoURL
       };
 
       await commentsCollection.add(comment);
@@ -210,19 +210,24 @@ export default {
       }, 3000);
     },
     async getComments() {
-      const snapshots = await commentsCollection
-        .where("sid", "==", this.$route.params.id)
-        .get();
+  const snapshots = await commentsCollection
+    .where("sid", "==", this.$route.params.id)
+    .get();
 
-      this.comments = [];
+  const promises = snapshots.docs.map(async (doc) => {
+    let commentData = doc.data();
+    let userSnapshot = await usersCollection.doc(commentData.uid).get();
+    let userData = userSnapshot.data();
 
-      snapshots.forEach((doc) => [
-        this.comments.push({
-          docID: doc.id,
-          ...doc.data(),
-        }),
-      ]);
-    },
+    return {
+      docID: doc.id,
+      ...commentData,
+      avatar: userData.photoURL
+    };
+  });
+
+  this.comments = await Promise.all(promises);
+}
   },
   watch: {
     sort(newVal) {
