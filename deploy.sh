@@ -10,4 +10,4 @@ git add -A
 
 git commit -m 'Hello'
 
-git push -f git@github.com:MitsubaKato/Mmusic.git master:gh-pages
+git push -f alexreals78@gmail.com:MitsubaKato/Mmusic.git master:gh-pages
