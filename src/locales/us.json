@@ -45,7 +45,10 @@
     "title": "Song Title",
     "genre": "Genre",
     "submit": "Submit",
-    "back": "Back"
+    "back": "Back",
+    "cover": "Cover",
+    "coverSet": "Set cover",
+    "pick": "pick one"
   },
   "placeholder": {
     "text": "Enter Comment"

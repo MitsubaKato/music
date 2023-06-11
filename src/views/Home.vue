@@ -24,10 +24,10 @@
 
     <!-- Main Content -->
     <section class="container mx-auto">
-      <div class="bg-bgSong rounded border-gray-200 relative flex flex-col">
+      <div class="bg-gray-900 rounded border-gray-200 relative flex flex-col">
         <!-- Playlist -->
         <div id="playlist">
-          <app-song-item v-for="song in songs" :key="song.docID" :song="song" @showAuthModal="showAuthModal" />
+          <app-song-item  v-for="song in songs" :key="song.docID" :song="song" @showAuthModal="showAuthModal" />
         </div>
         <!-- .. end Playlist -->
       </div>

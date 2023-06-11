@@ -21,6 +21,15 @@ export default {
     },
   },
   mutations: {
+    resetSong(state) {
+      state.currentSong = {};
+      state.sound = {};
+    },
+    resetProgress(state) {
+      state.seek = '00:00';
+      state.duration = '00:00';
+      state.playerProgress = '0%';
+    },
     newSong(state, payload) {
       state.currentSong = payload;
       state.sound = new Howl({
@@ -43,6 +52,16 @@ export default {
     },
   },
   actions: {
+    resetSong({ commit }) {
+      commit('newSong', {}); // Очищаем текущую песню, отправляя пустой объект
+    },
+    resetProgress({ commit }) {
+      commit('updatePosition', {
+        seek: '00:00',
+        duration: '00:00',
+        playerProgress: '0%',
+      }); // Сбрасываем прогресс плеера
+    },
     async newSong({ commit, state, dispatch }, payload) {
       if (state.sound instanceof Howl) {
         state.sound.unload();
@@ -92,11 +111,16 @@ export default {
       state.sound.seek(seconds);
       dispatch('progress');
     },
-
     stopAudio({ state }) {
-      if (state.sound instanceof Howl && state.sound.playing()) {
+      if (state.sound instanceof Howl) {
         state.sound.stop(); // Используйте метод stop Howler.js, чтобы остановить воспроизведение звука
       }
     },
+
+    // stopAudio({ state }) {
+    //   if (state.sound instanceof Howl && state.sound.playing()) {
+    //     state.sound.stop(); // Используйте метод stop Howler.js, чтобы остановить воспроизведение звука
+    //   }
+    // },
   },
 };
