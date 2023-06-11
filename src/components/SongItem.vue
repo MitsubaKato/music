@@ -24,8 +24,8 @@
         {{ song.comment_count }}
       </span>
 
-      <button @click="addLike" :class="{ 'heart': liked, 'heartBeat': liked }">
-        <i class="fa fa-heart ml-4" :class="{ 'text-red-700': liked, 'text-gray-500': !liked }"></i>
+      <button @click="addLike" class="no-outline" :class="{ 'heart': liked, 'heartBeat': liked }">
+        <i class="fa fa-heart ml-4 " :class="{ 'text-red-700': liked, 'text-gray-500': !liked }"></i>
       </button>
     </div>
   </div>

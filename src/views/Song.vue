@@ -10,8 +10,9 @@
         <!-- Play/Pause Button -->
         <button type="button" class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
           @click.prevent="newSong(song)">
-          <i class="fa text-gray-500 text-xl" :class="{ 'fa-play': !playing, 'fa-pause': playing }"></i>
+          <i class="fa text-gray-500 text-xl -mr-1" :class="{ 'fa-play': !playing, 'fa-pause': playing }"></i>
         </button>
+
         <div class="z-50 text-left ml-8">
           <!-- Song Cover -->
       <img :src="song.cover" alt="Song Cover" class="h-24 w-24 object-cover rounded-full mr-4">
@@ -87,7 +88,7 @@
                   <p class="text-gray-400 text-sm">{{ comment.datePosted }}</p>
               </div>
           </div>
-          <p class="-mt-4 text-gray-500">{{ comment.content }}</p>
+          <p class="-mt-4 text-gray-500 break-words">{{ comment.content }}</p>
       </div>
       </li>
     </ul>
