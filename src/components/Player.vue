@@ -3,7 +3,7 @@
     <!-- Control Buttons -->
     <div class="flex-shrink-0 ">
         <button type="button" @click.prevent="toggleAudio">
-            <i class="fa  text-3xl" :class="{ 'faк fa-play': !playing, 'faк fa-pause': playing }"></i>
+            <i class="fa  text-3xl no-outline" :class="{ 'faк fa-play': !playing, 'faк fa-pause': playing }"></i>
         </button>
     </div>
     <div class="w-14 h-7 leading-3 text-gray-400 text-lg flex items-center pl-5">
@@ -12,7 +12,7 @@
     <!-- Scrub -->
     <div class="flex-grow mx-3 h-2 bg-gray-300 relative cursor-pointer" @click.prevent="updateSeek">
         <!-- Player Ball -->
-        <span class="absolute top-neg-8 text-gray-800 text-lg" :style="{ left: playerProgress }">
+        <span class="absolute -top-2 text-gray-800 text-xl" :style="{ left: playerProgress }">
             <i class="fas fa-circle"></i>
         </span>
         <!-- Player Progress Bar -->

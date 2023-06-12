@@ -1,7 +1,7 @@
 <template>
 <main class="profile-page">
 <section class="relative block h-500-px">
-  <div @click="triggerBgUpload" class="absolute top-0 w-full h-full bg-center bg-cover" :style="`background-image: url('${user.backgroundURL || 'https://images.unsplash.com/photo-1499336315816-097655dcfbda?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=2710&amp;q=80'}');`">
+  <div @click="triggerBgUpload" class="absolute top-0 w-full h-full bg-center bg-cover" :style="`background-image: url('${user.backgroundURL || '../assets/img/user-header.png'}');`">
         <input type="file" ref="bgInput" @change="handleBgUpload" style="display: none" />
     <span id="blackOverlay" class="w-full h-full absolute opacity-50 bg-black"></span>
   </div>
@@ -46,17 +46,6 @@
           </h3>
         </div>
         <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
-          <div class="flex flex-wrap justify-center">
-            <div class="w-full lg:w-9/12 px-4">
-              <p class="mb-4 text-lg leading-relaxed text-blueGray-700">
-                An artist of considerable range, Jenna the name taken by
-                Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                performs and records all of his own music, giving it a
-                warm, intimate feel with a solid groove structure. An
-                artist of considerable range.
-              </p>
-            </div>
-          </div>
         </div>
         <div class="text-center"> 
           <h3 class="text-xl font-semibold mb-4">{{ $t("profile.likes") }} <i class="fa fa-heart pl-2 text-red-500"></i></h3> 
@@ -106,6 +95,11 @@ export default {
       userUploads: 0,
     };
   },
+  beforeUnmount() {
+  if (this.unsubscribeProfileListener) {
+    this.unsubscribeProfileListener(); // Отмена слушателя изменений аватара пользователя
+  }
+},
   created() {
     this.unsubscribeAuth = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -218,13 +212,23 @@ export default {
 
     async fetchUserProfile() {
       const userId = auth.currentUser.uid;
-      const userSnapshot = await usersCollection.doc(userId).get();
-      const userData = userSnapshot.data();
 
-      this.user = {
-        ...userData,
-        uid: userId,
-      };
+  // Получение информации о пользователе
+  const userSnapshot = await usersCollection.doc(userId).get();
+  const userData = userSnapshot.data();
+
+  // Обновление локального состояния аватара пользователя
+  this.user = {
+    ...userData,
+    uid: userId,
+  };
+  // Слушатель изменений аватара пользователя в Firestore
+  this.unsubscribeProfileListener = usersCollection.doc(userId).onSnapshot((snapshot) => {
+    const updatedData = snapshot.data();
+
+    // Обновление локального состояния аватара пользователя при изменениях
+    this.user.photoURL = updatedData.photoURL;
+  });
     },
   },
 };

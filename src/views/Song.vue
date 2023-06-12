@@ -10,8 +10,9 @@
         <!-- Play/Pause Button -->
         <button type="button" class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
           @click.prevent="newSong(song)">
-          <i class="fa text-gray-500 text-xl" :class="{ 'fa-play': !playing, 'fa-pause': playing }"></i>
+          <i class="fa text-gray-500 text-xl -mr-1" :class="{ 'fa-play': !playing, 'fa-pause': playing }"></i>
         </button>
+
         <div class="z-50 text-left ml-8">
           <!-- Song Cover -->
       <img :src="song.cover" alt="Song Cover" class="h-24 w-24 object-cover rounded-full mr-4">
@@ -87,7 +88,7 @@
                   <p class="text-gray-400 text-sm">{{ comment.datePosted }}</p>
               </div>
           </div>
-          <p class="-mt-4 text-gray-500">{{ comment.content }}</p>
+          <p class="-mt-4 text-gray-500 break-words">{{ comment.content }}</p>
       </div>
       </li>
     </ul>
@@ -98,7 +99,7 @@
 </template>
 
 <script>
-import { songsCollection, auth, commentsCollection } from "@/includes/firebase";
+import { songsCollection, auth, commentsCollection, usersCollection } from "@/includes/firebase";
 import { mapState, mapActions, mapGetters } from "vuex";
 import AppPlayer from "../components/Player.vue";
 
@@ -114,7 +115,7 @@ export default {
       schema: {
         comment: "required|min:3"
       },
-        comment_alert_timeout: null,
+      comment_alert_timeout: null,
       formHasBeenSubmitted: false,
       comment_in_submission: false,
       comment_show_alert: false,
@@ -186,7 +187,7 @@ export default {
         sid: this.$route.params.id,
         name: auth.currentUser.displayName,
         uid: auth.currentUser.uid,
-        avatar: auth.currentUser.photoURL,
+        avatar: auth.currentUser.photoURL
       };
 
       await commentsCollection.add(comment);
@@ -210,19 +211,24 @@ export default {
       }, 3000);
     },
     async getComments() {
-      const snapshots = await commentsCollection
-        .where("sid", "==", this.$route.params.id)
-        .get();
+  const snapshots = await commentsCollection
+    .where("sid", "==", this.$route.params.id)
+    .get();
 
-      this.comments = [];
+  const promises = snapshots.docs.map(async (doc) => {
+    let commentData = doc.data();
+    let userSnapshot = await usersCollection.doc(commentData.uid).get();
+    let userData = userSnapshot.data();
 
-      snapshots.forEach((doc) => [
-        this.comments.push({
-          docID: doc.id,
-          ...doc.data(),
-        }),
-      ]);
-    },
+    return {
+      docID: doc.id,
+      ...commentData,
+      avatar: userData.photoURL
+    };
+  });
+
+  this.comments = await Promise.all(promises);
+}
   },
   watch: {
     sort(newVal) {
