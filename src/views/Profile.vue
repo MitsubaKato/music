@@ -46,17 +46,6 @@
           </h3>
         </div>
         <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
-          <div class="flex flex-wrap justify-center">
-            <div class="w-full lg:w-9/12 px-4">
-              <p class="mb-4 text-lg leading-relaxed text-blueGray-700">
-                An artist of considerable range, Jenna the name taken by
-                Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                performs and records all of his own music, giving it a
-                warm, intimate feel with a solid groove structure. An
-                artist of considerable range.
-              </p>
-            </div>
-          </div>
         </div>
         <div class="text-center"> 
           <h3 class="text-xl font-semibold mb-4">{{ $t("profile.likes") }} <i class="fa fa-heart pl-2 text-red-500"></i></h3> 
