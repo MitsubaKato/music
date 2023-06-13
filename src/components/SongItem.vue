@@ -2,7 +2,7 @@
   <div class="select-none cursor-pointer bg-gradient-to-r from-gray-800 to-gray-700 rounded-md flex flex-1 items-center p-4 mb-3 transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-lg " :id="`song-id-${song.docID}`">
     
     <div>
-        <img :src="song.cover || 'https://via.placeholder.com/150'" class="w-20 h-full rounded-md" alt="">
+        <img :src="song.cover || 'https://via.placeholder.com/150'" class="w-20 h-full rounded-md" alt="Cover">
     </div>
 
     <div class="flex-grow pl-4">

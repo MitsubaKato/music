@@ -115,7 +115,7 @@ export default {
       successTimeout: null,
       schema: {
         modified_name: "required",
-        genre: "alpha_spaces",
+        genre: "",
       },
       in_submission: false,
       show_alert: false,
@@ -205,19 +205,47 @@ export default {
       this.updateSong(this.index, this.song);
     },
     async deleteSong() {
-      const storageRef = storage.ref();
-      const songRef = storageRef.child(`songs/${this.song.original_name}`);
-      const coverRef = storageRef.child(`covers/${this.song.cover}`);
+  try {
+    const storageRef = storage.ref();
+    const songRef = storageRef.child(`songs/${this.song.original_name}`);
+    const coverRef = storageRef.child(`covers/${this.song.cover}`);
 
-      await songRef.delete();
-      if (this.song.cover) {
-        await coverRef.delete();
-      }
+    // Проверка на существование файла песни
+    await songRef.getDownloadURL();
 
+    await songRef.delete();
+
+    if (this.song.cover) {
+      // Проверка на существование файла обложки
+      await coverRef.getDownloadURL();
+      await coverRef.delete();
+    }
+
+    // Удаление всех связанных комментариев
+    const commentsSnapshot = await db.collection('comments').where('sid', '==', this.song.docID).get();
+    commentsSnapshot.forEach((doc) => {
+      db.collection('comments').doc(doc.id).delete();
+    });
+
+    const likesSnapshot = await db.collection('likes').where('songId', '==', this.song.docID).get();
+    likesSnapshot.forEach((doc) => {
+      db.collection('likes').doc(doc.id).delete();
+    });
+
+    await songsCollection.doc(this.song.docID).delete();
+    this.removeSong(this.index);
+  } catch (error) {
+    if (error.code === 'storage/object-not-found') {
+      // Если файл не найден в хранилище, всё равно удаляем его из коллекции
       await songsCollection.doc(this.song.docID).delete();
-
       this.removeSong(this.index);
-    },
+    } else {
+      console.error("Error deleting song: ", error);
+    }
+  }
+},
+
+
       handleFileChange(event) {
       this.coverFile = event.target.files[0];
       const reader = new FileReader();

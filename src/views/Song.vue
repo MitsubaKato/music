@@ -3,19 +3,17 @@
 
   <main>
     <!-- Music Header -->
-    <section class="w-full mb-8 py-14 text-center text-white relative">
-      <div class="absolute inset-0 w-full h-full box-border bg-contain music-bg"
-        style="background-image: url(/assets/img/song-header.png)"></div>
+    <section class="w-full mb-8 py-14 text-center text-white relative flex">
+      <div class="absolute flex inset-0 w-full h-full box-border bg-contain music-bg" style="background-image: url(/assets/img/song-header.png)">
+      </div>
       <div class="container mx-auto flex items-center">
         <!-- Play/Pause Button -->
         <button type="button" class="z-50 h-24 w-24 text-3xl bg-white text-black rounded-full focus:outline-none"
           @click.prevent="newSong(song)">
           <i class="fa text-gray-500 text-xl -mr-1" :class="{ 'fa-play': !playing, 'fa-pause': playing }"></i>
         </button>
-
+        
         <div class="z-50 text-left ml-8">
-          <!-- Song Cover -->
-      <img :src="song.cover" alt="Song Cover" class="h-24 w-24 object-cover rounded-full mr-4">
           <!-- Song Info -->
           <div class="text-3xl font-bold">{{ song.modified_name }}</div>
           <div class="pt-2 block">
@@ -80,7 +78,7 @@
       <li class="p-6 bg-gray-50 " v-for="comment in sortedComments" :key="comment.docID">
         <div class="relative grid grid-cols-1 gap-4 p-4 mb-8 border rounded-lg bg-white shadow-lg">
           <div class="relative flex gap-4">
-            <img :src="comment.avatar" class="relative rounded-lg -top-8 -mb-4 bg-white border h-20 w-20" alt="Comment avatar">
+            <img :src="comment.avatar" class="relative rounded-lg object-cover -top-8 -mb-4 bg-white border h-20 w-20" alt="Comment avatar">
               <div class="flex flex-col w-full">
                   <div class="flex flex-row justify-between">
                       <p class="relative text-xl whitespace-nowrap truncate overflow-hidden">{{ comment.name }}</p>

@@ -140,6 +140,9 @@ export default {
         this.uploads[uploadIndex].variant = "bg-green-400";
         this.uploads[uploadIndex].icon = "fas fa-check";
         this.uploads[uploadIndex].text_class = "text-green-400";
+        setTimeout(() => {
+      this.removeUpload(this.uploads[uploadIndex]);
+    }, 3000);
       } catch (error) {
         this.uploads[uploadIndex].variant = "bg-red-400";
         this.uploads[uploadIndex].icon = "fas fa-times";
@@ -154,9 +157,13 @@ export default {
         ? [...$event.dataTransfer.files]
         : [...$event.target.files];
 
-      for (const file of files) {
-        await this.uploadFile(file);
-      }
+        const uploadPromises = files.map(file => this.uploadFile(file));
+
+        await Promise.all(uploadPromises);
+
+      //   for (const file of files) {
+      //   await this.uploadFile(file);
+      // }
       $event.target.value = null;
     },
     cancelUploads() {
