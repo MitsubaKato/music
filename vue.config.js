@@ -14,5 +14,5 @@ module.exports = {
       short_name: "Music",
     },
   },
-  publicPath: "/MusicApp/",
+  publicPath: "/music/",
 };
